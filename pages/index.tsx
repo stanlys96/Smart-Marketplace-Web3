@@ -256,8 +256,8 @@ export default function Home() {
   ];
   return (
     <div>
-      <div className="px-[100px] py-[30px] flex flex-col gap-5">
-        <nav className="flex gap-[1rem] items-center flex-1">
+      <div className="px-[20px] lg:px-[100px] py-[30px] flex flex-col gap-5">
+        <nav className="flex lg:flex-row flex-col gap-[1rem] items-center flex-1">
           <Image
             className="flex-1 h-fit"
             src="/gumroad.svg"
@@ -303,7 +303,7 @@ export default function Home() {
             Start&nbsp;selling
           </button>
         </nav>
-        <div className="flex">
+        <div className="hidden lg:flex">
           {categories.map((data) => (
             <div key={data?.id} className="popover">
               <button
@@ -326,9 +326,9 @@ export default function Home() {
         </div>
       </div>
       <div className="h-[1px] w-full bg-[#646564]" />
-      <div className="px-[100px] py-[30px]">
+      <div className="lg:px-[100px] px-[20px] py-[30px]">
         <p className="text-[24px] mb-[15px]">Products by category</p>
-        <div className="grid grid-cols-2 gap-5">
+        <div className="grid lg:grid-cols-2 gap-5">
           {products?.map((product) => (
             <div
               key={product?.id}
@@ -344,7 +344,7 @@ export default function Home() {
               <div className="flex flex-col gap-y-2">
                 <p className="font-bold text-[24px]">{product?.title}</p>
                 <p>{product?.description}</p>
-                <div className="flex items-center gap-x-2">
+                <div className="flex items-start  gap-2 lg:flex-row flex-col lg:items-center">
                   <div className="flex gap-x-2">
                     <Image
                       className="text-white"
@@ -388,8 +388,8 @@ export default function Home() {
         </div>
       </div>
       <div className="h-[1px] w-full bg-[#646564]" />
-      <footer className="bg-black py-[25px] flex gap-x-5 justify-center items-center">
-        <p className="text-center text-[24px]">
+      <footer className="bg-black py-[25px] lg:flex-row flex-col flex gap-5 justify-center items-center">
+        <p className="text-center text-[18px] lg:text-[24px]">
           With Gumroad, anyone can earn their first dollar online.
         </p>
         <button className="bg-[#FF91E7] hover:bg-[#FF91E7] border border-[#4D4D4D] selling-2 px-[1rem] py-[0.75rem] rounded-[0.25rem] text-black">
