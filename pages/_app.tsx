@@ -13,9 +13,9 @@ const queryClient = new QueryClient();
 const PROJECT_ID = process.env.NEXT_PUBLIC_PROJECT_ID;
 
 const metadata = {
-  name: "Hyfen",
-  description: "Hyfen",
-  url: "https://hyfen.gg", // origin must match your domain & subdomain
+  name: "Gumroad",
+  description: "Gumroad",
+  url: "https://gumroad-web3.vercel.app", // origin must match your domain & subdomain
   icons: [process.env.NEXT_PUBLIC_ICON_URL ?? ""],
 };
 

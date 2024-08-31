@@ -305,7 +305,7 @@ export default function Home() {
         </nav>
         <div className="flex">
           {categories.map((data) => (
-            <div className="popover">
+            <div key={data?.id} className="popover">
               <button
                 role="menuitem"
                 key={data?.id}
@@ -330,7 +330,10 @@ export default function Home() {
         <p className="text-[24px] mb-[15px]">Products by category</p>
         <div className="grid grid-cols-2 gap-5">
           {products?.map((product) => (
-            <div className="button items-start flex gap-x-4 bg-black rounded-[0.25rem] cursor-pointer border border-[#4D4D4D] text-white p-[1rem]">
+            <div
+              key={product?.id}
+              className="button items-start flex gap-x-4 bg-black rounded-[0.25rem] cursor-pointer border border-[#4D4D4D] text-white p-[1rem]"
+            >
               <Image
                 className=""
                 src={product?.imgUrl}
