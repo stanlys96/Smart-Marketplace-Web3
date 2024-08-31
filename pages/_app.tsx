@@ -19,7 +19,7 @@ const metadata = {
   icons: [process.env.NEXT_PUBLIC_ICON_URL ?? ""],
 };
 
-const chains = [mainnet, arbitrum, optimism, polygon];
+const chains: any = [mainnet, arbitrum, optimism, polygon];
 const config = defaultWagmiConfig({
   chains,
   projectId: PROJECT_ID ?? "",
