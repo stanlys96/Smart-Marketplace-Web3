@@ -1,0 +1,568 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  --parent-color: var(--color);
+}
+@font-face {
+  font-family: "Mabry Pro";
+  src: url(https://assets.gumroad.com/packs/static/19db990205089207b039.woff2);
+}
+@font-face {
+  font-family: "Mabry Pro";
+  src: url(https://assets.gumroad.com/packs/static/b155e959ca3c72194673.woff2);
+  font-style: italic;
+}
+@font-face {
+  font-family: "Mabry Pro";
+  src: url(https://assets.gumroad.com/packs/static/f301b7100da17db3c2c0.woff2);
+  font-weight: 700;
+}
+@font-face {
+  font-family: "Mabry Pro";
+  src: url(https://assets.gumroad.com/packs/static/aaec7850d09c0889a8b5.woff2);
+  font-weight: 700;
+  font-style: italic;
+}
+:root,
+:host {
+  --csstools-color-scheme--dark: ;
+  color-scheme: light dark;
+  --spacer-1: 0.25rem;
+  --spacer-2: 0.5rem;
+  --spacer-3: 0.75rem;
+  --spacer-4: 1rem;
+  --spacer-5: 1.5rem;
+  --spacer-6: 2rem;
+  --spacer-7: 3rem;
+  --spacer-8: 4rem;
+  --border-radius-1: 0.25rem;
+  --border-radius-2: 0.5rem;
+  --border-radius-3: 10rem;
+  --box-shadow-1: 0.25rem 0.25rem 0rem var(--color);
+  --box-shadow-2: 0.5rem 0.5rem 0rem var(--color);
+  --z-index-base: 0;
+  --z-index-overlay: 1;
+  --z-index-above-overlay: 2;
+  --z-index-header: 3;
+  --z-index-menubar: 10;
+  --z-index-modal: 20;
+  --z-index-tooltip: 30;
+  --pink: #ff90e8;
+  --purple: #90a8ed;
+  --green: #23a094;
+  --orange: #ffc900;
+  --red: #dc341e;
+  --yellow: #f1f333;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 1024px;
+  --success: 35 160 148;
+  --contrast-success: 0 0 0;
+  --warning: 255 201 0;
+  --contrast-warning: 0 0 0;
+  --danger: 220 52 30;
+  --contrast-danger: 255 255 255;
+  --info: 144 168 237;
+  --contrast-info: 0 0 0;
+  --accent: 255 144 232;
+  --contrast-accent: 0 0 0;
+  --primary: 0 0 0;
+  --contrast-primary: 255 255 255;
+  --black: 0 0 0;
+  --contrast-black: 255 255 255;
+  --filled: 255 255 255;
+  --contrast-filled: 0 0 0;
+  --color: 0 0 0;
+  --body-bg: #f4f4f0;
+  --border-alpha: 1;
+  --font-family: Mabry Pro, Avenir, Montserrat, Corbel, URW Gothic,
+    source-sans-pro, sans-serif;
+  --border-width: 0.0625rem;
+  --big-icon-size: 1.5em;
+  --active-bg: rgb(var(--filled));
+  --main-stack-width: 28rem;
+  --dynamic-grid: min(100%, calc((31.25rem - 100%) * 1000));
+  --disabled-opacity: 0.3;
+  --form-element-height: 3.025rem;
+  --transition-duration: 0.14s;
+}
+@media (prefers-color-scheme: dark) {
+  :root,
+  :host {
+    --csstools-color-scheme--dark: initial;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  :root,
+  :host {
+    --body-bg: #242423;
+    --primary: 221 221 221;
+    --contrast-primary: 0 0 0;
+    --color: 221 221 221;
+    --filled: 0 0 0;
+    --contrast-filled: 221 221 221;
+    --contrast-black: 221 221 221;
+    --border-alpha: 0.35;
+  }
+}
+
+body {
+  font-size: 1rem;
+  line-height: 1.4;
+  font-family: var(--font-family);
+  background-color: #242423;
+  -webkit-font-smoothing: antialiased;
+  color: rgb(var(--color));
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+.button:hover:not(:active):not(:disabled),
+.tab-buttons[role="tablist"] [aria-haspopup][aria-expanded="true"][role="tab"],
+.widget .overlay [aria-haspopup][aria-expanded="true"].close-button,
+[aria-haspopup][aria-expanded="true"].category-card,
+[aria-haspopup][aria-expanded="true"].button,
+.linky:hover:not(:active):not(:disabled) {
+  transform: translate(-0.25rem, -0.25rem);
+  box-shadow: 0.25rem 0.25rem 0rem rgb(var(--color));
+}
+
+/* .tupac {
+  transform: translate(-0.25rem, -0.25rem);
+  box-shadow: 0.25rem 0.25rem 0rem rgb(var(--color));
+} */
+
+.selling:hover:not(:active):not(:disabled),
+.selling-2:hover:not(:active):not(:disabled) {
+  transform: translate(-0.25rem, -0.25rem);
+  box-shadow: 0.25rem 0.25rem 0rem black;
+}
+
+.linky,
+.tupac {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid transparent;
+}
+
+.linky:hover {
+  background-color: black;
+  border-radius: 10rem;
+  border: 1px solid #4d4d4d;
+}
+
+.tupac {
+  background-color: black;
+  border-radius: 10rem;
+  border: 1px solid #4d4d4d;
+}
+
+.tab-buttons[role="tablist"] .success[role="tab"],
+.widget .overlay .success.close-button,
+.success.category-card,
+.success.button,
+.tab-buttons[role="tablist"] .outline-success[role="tab"]:hover:not(:disabled),
+.widget .overlay .outline-success.close-button:hover:not(:disabled),
+.outline-success.category-card:hover:not(:disabled),
+.outline-success.button:hover:not(:disabled) {
+  background-color: rgb(var(--success));
+  --color: var(--contrast-success);
+  --parent-color: inherit;
+  color: rgb(var(--color));
+  --active-bg: rgb(var(--color) / 0.1);
+}
+
+.tab-buttons[role="tablist"] .danger[role="tab"],
+.widget .overlay .danger.close-button,
+.danger.category-card,
+.danger.button,
+.tab-buttons[role="tablist"] .outline-danger[role="tab"]:hover:not(:disabled),
+.widget .overlay .outline-danger.close-button:hover:not(:disabled),
+.outline-danger.category-card:hover:not(:disabled),
+.outline-danger.button:hover:not(:disabled) {
+  background-color: rgb(var(--danger));
+  --color: var(--contrast-danger);
+  --parent-color: inherit;
+  color: rgb(var(--color));
+  --active-bg: rgb(var(--color) / 0.1);
+}
+
+.tab-buttons[role="tablist"] .warning[role="tab"],
+.widget .overlay .warning.close-button,
+.warning.category-card,
+.warning.button,
+.tab-buttons[role="tablist"] .outline-warning[role="tab"]:hover:not(:disabled),
+.widget .overlay .outline-warning.close-button:hover:not(:disabled),
+.outline-warning.category-card:hover:not(:disabled),
+.outline-warning.button:hover:not(:disabled) {
+  background-color: rgb(var(--warning));
+  --color: var(--contrast-warning);
+  --parent-color: inherit;
+  color: rgb(var(--color));
+  --active-bg: rgb(var(--color) / 0.1);
+}
+
+.tab-buttons[role="tablist"] .info[role="tab"],
+.widget .overlay .info.close-button,
+.info.category-card,
+.info.button,
+.tab-buttons[role="tablist"] .outline-info[role="tab"]:hover:not(:disabled),
+.widget .overlay .outline-info.close-button:hover:not(:disabled),
+.outline-info.category-card:hover:not(:disabled),
+.outline-info.button:hover:not(:disabled) {
+  background-color: rgb(var(--info));
+  --color: var(--contrast-info);
+  --parent-color: inherit;
+  color: rgb(var(--color));
+  --active-bg: rgb(var(--color) / 0.1);
+}
+
+.tab-buttons[role="tablist"] .black[role="tab"],
+.widget .overlay .black.close-button,
+.black.category-card,
+.black.button,
+.tab-buttons[role="tablist"] .outline-black[role="tab"]:hover:not(:disabled),
+.widget .overlay .outline-black.close-button:hover:not(:disabled),
+.outline-black.category-card:hover:not(:disabled),
+.outline-black.button:hover:not(:disabled) {
+  background-color: rgb(var(--black));
+  --color: var(--contrast-black);
+  --parent-color: inherit;
+  color: rgb(var(--color));
+  --active-bg: rgb(var(--color) / 0.1);
+}
+
+.tab-buttons[role="tablist"] .accent[role="tab"],
+.widget .overlay .accent.close-button,
+.accent.category-card,
+.accent.button,
+.tab-buttons[role="tablist"] .outline-accent[role="tab"]:hover:not(:disabled),
+.widget .overlay .outline-accent.close-button:hover:not(:disabled),
+.outline-accent.category-card:hover:not(:disabled),
+.outline-accent.button:hover:not(:disabled) {
+  background-color: rgb(var(--accent));
+  --color: var(--contrast-accent);
+  --parent-color: inherit;
+  color: rgb(var(--color));
+  --active-bg: rgb(var(--color) / 0.1);
+}
+
+.tab-buttons[role="tablist"] .filled[role="tab"],
+.widget .overlay .close-button,
+.filled.category-card,
+.filled.button,
+.tab-buttons[role="tablist"] .outline-filled[role="tab"]:hover:not(:disabled),
+.outline-filled.category-card:hover:not(:disabled),
+.outline-filled.button:hover:not(:disabled) {
+  background-color: rgb(var(--filled));
+  --color: var(--contrast-filled);
+  --parent-color: inherit;
+  color: rgb(var(--color));
+  --active-bg: rgb(var(--color) / 0.1);
+}
+
+.tab-buttons[role="tablist"] .primary[role="tab"]:hover:not(:disabled),
+.tab-buttons[role="tablist"]
+  .chosen-container
+  .chosen-choices
+  [role="tab"].search-choice:hover:not(:disabled),
+.chosen-container
+  .chosen-choices
+  .tab-buttons[role="tablist"]
+  [role="tab"].search-choice:hover:not(:disabled),
+.widget .overlay .primary.close-button:hover:not(:disabled),
+.widget
+  .overlay
+  .chosen-container
+  .chosen-choices
+  .close-button.search-choice:hover:not(:disabled),
+.chosen-container
+  .chosen-choices
+  .widget
+  .overlay
+  .close-button.search-choice:hover:not(:disabled),
+.primary.category-card:hover:not(:disabled),
+.chosen-container
+  .chosen-choices
+  .category-card.search-choice:hover:not(:disabled),
+.primary.button:hover:not(:disabled),
+.chosen-container .chosen-choices .button.search-choice:hover:not(:disabled) {
+  background-color: rgb(var(--accent));
+  --color: var(--contrast-accent);
+  --parent-color: inherit;
+  color: rgb(var(--color));
+  --active-bg: rgb(var(--color) / 0.1);
+}
+
+.button,
+.selling,
+.linky,
+.tupac,
+.selling-2 {
+  transition-timing-function: ease-out;
+  transition-duration: var(--transition-duration);
+  transition-property: transform;
+}
+
+.input > .pill,
+.chosen-container .chosen-choices .input > .search-choice,
+.chosen-container .chosen-choices > .pill,
+.chosen-container .chosen-choices > .search-choice {
+  flex-shrink: 0;
+}
+.input > .pill:first-child,
+.chosen-container .chosen-choices .input > .search-choice:first-child,
+.chosen-container .chosen-choices > .pill:first-child,
+.chosen-container .chosen-choices > .search-choice:first-child {
+  margin-left: -0.5rem;
+}
+.input > .pill:last-child,
+.chosen-container .chosen-choices .input > .search-choice:last-child,
+.chosen-container .chosen-choices > .pill:last-child,
+.chosen-container .chosen-choices > .search-choice:last-child {
+  margin-right: -0.5rem;
+}
+
+.pill,
+.chosen-container .chosen-choices .search-choice {
+  display: inline-block;
+  vertical-align: middle;
+  padding: 0.5rem 0.75rem;
+  background-color: rgb(var(--filled));
+  --color: var(--contrast-filled);
+  --parent-color: inherit;
+  color: rgb(var(--color));
+  --active-bg: rgb(var(--color) / 0.1);
+  border: solid 0.0625rem rgb(var(--parent-color) / var(--border-alpha));
+  border-radius: 10rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.pill.small,
+.chosen-container .chosen-choices .small.search-choice {
+  border-radius: 0.25rem;
+  padding: 0.25rem;
+  font-size: 0.875rem;
+  line-height: 1.3;
+}
+.pill.success,
+.chosen-container .chosen-choices .success.search-choice {
+  background-color: rgb(var(--success));
+  --color: var(--contrast-success);
+  --parent-color: inherit;
+  color: rgb(var(--color));
+  --active-bg: rgb(var(--color) / 0.1);
+  border-color: rgb(var(--success));
+}
+.pill.danger,
+.chosen-container .chosen-choices .danger.search-choice {
+  background-color: rgb(var(--danger));
+  --color: var(--contrast-danger);
+  --parent-color: inherit;
+  color: rgb(var(--color));
+  --active-bg: rgb(var(--color) / 0.1);
+  border-color: rgb(var(--danger));
+}
+.pill.warning,
+.chosen-container .chosen-choices .warning.search-choice {
+  background-color: rgb(var(--warning));
+  --color: var(--contrast-warning);
+  --parent-color: inherit;
+  color: rgb(var(--color));
+  --active-bg: rgb(var(--color) / 0.1);
+  border-color: rgb(var(--warning));
+}
+.pill.info,
+.chosen-container .chosen-choices .info.search-choice {
+  background-color: rgb(var(--info));
+  --color: var(--contrast-info);
+  --parent-color: inherit;
+  color: rgb(var(--color));
+  --active-bg: rgb(var(--color) / 0.1);
+  border-color: rgb(var(--info));
+}
+.pill.primary,
+.chosen-container .chosen-choices .search-choice {
+  background-color: rgb(var(--primary));
+  --color: var(--contrast-primary);
+  --parent-color: inherit;
+  color: rgb(var(--color));
+  --active-bg: rgb(var(--color) / 0.1);
+  border-color: rgb(var(--primary));
+}
+.pill.black,
+.chosen-container .chosen-choices .black.search-choice {
+  background-color: rgb(var(--black));
+  --color: var(--contrast-black);
+  --parent-color: inherit;
+  color: rgb(var(--color));
+  --active-bg: rgb(var(--color) / 0.1);
+  border-color: rgb(var(--black));
+}
+.pill.accent,
+.chosen-container .chosen-choices .accent.search-choice {
+  background-color: rgb(var(--accent));
+  --color: var(--contrast-accent);
+  --parent-color: inherit;
+  color: rgb(var(--color));
+  --active-bg: rgb(var(--color) / 0.1);
+  border-color: rgb(var(--accent));
+}
+.pill.filled,
+.chosen-container .chosen-choices .filled.search-choice,
+.widget .overlay .pill.close-button,
+.widget .overlay .chosen-container .chosen-choices .close-button.search-choice,
+.chosen-container .chosen-choices .widget .overlay .close-button.search-choice {
+  background-color: rgb(var(--filled));
+  --color: var(--contrast-filled);
+  --parent-color: inherit;
+  color: rgb(var(--color));
+  --active-bg: rgb(var(--color) / 0.1);
+  border-color: rgb(var(--filled));
+}
+.pill.select,
+.chosen-container .chosen-choices .select.search-choice {
+  position: relative;
+}
+.pill.select select,
+.chosen-container .chosen-choices .select.search-choice select {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.pill.dismissable,
+.chosen-container .chosen-choices .dismissable.search-choice {
+  cursor: pointer;
+}
+.pill.dismissable::before,
+.chosen-container .chosen-choices .dismissable.search-choice::before {
+  float: right;
+  margin-left: 0.5rem;
+}
+.pill.expandable,
+.chosen-container .chosen-choices .expandable.search-choice,
+.pill.select,
+.chosen-container .chosen-choices .select.search-choice {
+  cursor: pointer;
+}
+.pill.expandable::before,
+.chosen-container .chosen-choices .expandable.search-choice::before,
+.pill.select::before,
+.chosen-container .chosen-choices .select.search-choice::before {
+  float: right;
+  margin-left: 0.5rem;
+}
+
+.chosen-container .chosen-choices .search-choice .search-choice-close,
+main.product-content
+  .has-sidebar
+  .pagelist[role="tablist"]
+  [role="tab"]
+  > [aria-grabbed],
+main.product-content
+  .has-sidebar
+  .pagelist[role="tablist"]
+  [role="tab"][contenteditable="true"]::before,
+table > thead th[aria-sort]:after,
+[role="tree"] [role="treeitem"][aria-expanded] > .content::before,
+main.product-content .rich-text .embed [aria-grabbed],
+[role="tree"] [role="treeitem"] [aria-grabbed],
+.rows > * [aria-grabbed],
+[role="progressbar"][aria-valuenow="100"]::after,
+.pill.expandable::before,
+.chosen-container .chosen-choices .expandable.search-choice::before,
+.pill.select::before,
+.chosen-container .chosen-choices .select.search-choice::before,
+.pill.dismissable::before,
+.chosen-container .chosen-choices .dismissable.search-choice::before,
+.nested-menu [role="menu"] [role="menuitem"][aria-haspopup="menu"]::after,
+nav
+  footer
+  .popover
+  [role="menu"]
+  [role="menuitemradio"][aria-checked="true"]::before,
+nav footer .popover > summary::before,
+nav .navbar .toggle::after,
+dialog > h2 .close::after,
+.combobox
+  datalist[aria-multiselectable="true"]
+  option[aria-selected="true"]:after,
+.combobox
+  datalist[aria-multiselectable="true"]
+  [role="option"][aria-selected="true"]:after,
+input[type="checkbox"]:not([role="switch"]):checked::after,
+.carousel .arrow::after,
+main > a::after,
+main > .link::after,
+.big-links > a::after,
+.big-links > .link::after,
+aside .close::after,
+[role="alert"].info::before,
+[role="status"].info::before,
+[role="alert"].warning::before,
+[role="status"].warning::before,
+[role="alert"].danger::before,
+[role="status"].danger::before,
+[role="alert"].success::before,
+[role="status"].success::before,
+.brand-icon,
+.button-google::before,
+.button-zoom::before,
+.button-discord::before,
+.button-kindle::before,
+.button-android::before,
+.button-apple::before,
+.button-stripe::before,
+.button-paypal::before,
+.button-twitter::before,
+.button-facebook::before,
+.logo-full,
+.icon,
+details > summary::before {
+  content: "\a0";
+  display: inline-block;
+  background: currentColor;
+  min-height: max(1lh, 1em);
+  width: 1em;
+  -webkit-mask-position: 50% 50%;
+  mask-position: 50% 50%;
+  -webkit-mask-size: 120%;
+  mask-size: 120%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  flex-shrink: 0;
+}
+
+.icon-outline-cheveron-down,
+table > thead th[aria-sort="descending"]:after,
+[role="tree"] [role="treeitem"][aria-expanded] > .content::before,
+.pill.expandable::before,
+.chosen-container .chosen-choices .expandable.search-choice::before,
+.pill.select::before,
+.chosen-container .chosen-choices .select.search-choice::before,
+nav footer .popover > summary::before,
+details[open] > summary::before {
+  -webkit-mask-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0ibTE5IDkuMDA3LTcgNy03LTciIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4=);
+  mask-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0ibTE5IDkuMDA3LTcgNy03LTciIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4=);
+}
+
+.icon-x,
+.chosen-container .chosen-choices .search-choice .search-choice-close,
+.pill.dismissable::before,
+.chosen-container .chosen-choices .dismissable.search-choice::before,
+nav.open .navbar .toggle::after,
+dialog > h2 .close::after,
+aside .close::after {
+  -webkit-mask-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgZmlsbD0ibm9uZSI+PHBhdGggc3Ryb2tlPSIjMDAwIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMiIgZD0iTTYgMTggMTggNk02IDZsMTIgMTIiLz48L3N2Zz4=);
+  mask-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgZmlsbD0ibm9uZSI+PHBhdGggc3Ryb2tlPSIjMDAwIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMiIgZD0iTTYgMTggMTggNk02IDZsMTIgMTIiLz48L3N2Zz4=);
+}
