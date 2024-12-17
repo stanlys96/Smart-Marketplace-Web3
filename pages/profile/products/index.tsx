@@ -46,10 +46,13 @@ export default function Profile() {
           <div className="flex justify-between w-full items-center">
             <p className="text-black my-[1rem] text-[2.5rem]">Products</p>
             <div className="flex gap-x-3 items-center">
-              <button className="border button h-full text-[#DDDDDD] border-[#4D4D4D] h-full p-[1rem] rounded-[0.25rem] cursor-pointer text-black">
+              <button className="border button h-full text-[#DDDDDD] border-[#4D4D4D] h-full px-[1rem] py-[0.75rem] rounded-[0.25rem] cursor-pointer text-black">
                 <FaSearch size="22px" />
               </button>
-              <button className="border button bg-[#ff90e8] text-[#DDDDDD] border-[#4D4D4D] h-full p-[1rem] rounded-[0.25rem] cursor-pointer text-black">
+              <button
+                onClick={() => router.push("/profile/products/new")}
+                className="border button bg-[#ff90e8] text-[#DDDDDD] border-[#4D4D4D] h-full px-[1rem] py-[0.75rem] rounded-[0.25rem] cursor-pointer text-black"
+              >
                 New product
               </button>
             </div>

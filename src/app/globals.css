@@ -672,3 +672,19 @@ table > tfoot > * {
 .icon-circle-fill {
   mask-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTEyLjAxNCAyLjAwMmMtNS41MjIgMC0xMCA0LjQ3Ny0xMCAxMHM0LjQ3OCAxMCAxMCAxMGM1LjUyMyAwIDEwLTQuNDc3IDEwLTEwcy00LjQ3Ny0xMC0xMC0xMFoiIGZpbGw9IiMwMDAiLz48L3N2Zz4=);
 }
+
+.input-name-product {
+  font-family: inherit;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  line-height: 1.4;
+  border: solid 0.0625rem rgb(0, 0, 0);
+  border-radius: 0.25rem;
+  display: block;
+  width: 100%;
+  background-color: rgb(255, 255, 255);
+  --color: var(--contrast-filled);
+  --parent-color: inherit;
+  color: rgb(0, 0, 0);
+  --active-bg: rgb(var(--color) / 0.1);
+}
