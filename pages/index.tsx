@@ -2,8 +2,10 @@ import Image from "next/image";
 import { useState } from "react";
 import { useConnect, useAccount, useDisconnect } from "wagmi";
 import { web3Modal } from "./_app";
+import { useRouter } from "next/router";
 
 export default function Home() {
+  const router = useRouter();
   const { connect } = useConnect();
   const { disconnect } = useDisconnect();
   const account = useAccount();
@@ -299,7 +301,10 @@ export default function Home() {
               }}
             />
           </button>
-          <button className="bg-[#DDDDDD] hover:bg-[#FF91E7] border border-[#4D4D4D] selling p-[1rem] rounded-[0.25rem] text-black">
+          <button
+            onClick={() => router.push("/profile")}
+            className="bg-[#DDDDDD] hover:bg-[#FF91E7] border border-[#4D4D4D] selling p-[1rem] rounded-[0.25rem] text-black"
+          >
             Start&nbsp;selling
           </button>
         </nav>
@@ -327,7 +332,7 @@ export default function Home() {
       </div>
       <div className="h-[1px] w-full bg-[#646564]" />
       <div className="lg:px-[100px] px-[20px] py-[30px]">
-        <p className="text-[24px] mb-[15px]">Products by category</p>
+        <p className="text-[24px] mb-[15px] text-white">Products by category</p>
         <div className="grid lg:grid-cols-2 gap-5">
           {products?.map((product) => (
             <div
@@ -389,7 +394,7 @@ export default function Home() {
       </div>
       <div className="h-[1px] w-full bg-[#646564]" />
       <footer className="bg-black py-[25px] lg:flex-row flex-col flex gap-5 justify-center items-center">
-        <p className="text-center text-[18px] lg:text-[24px]">
+        <p className="text-center text-[18px] lg:text-[24px] text-white">
           With Gumroad, anyone can earn their first dollar online.
         </p>
         <button className="bg-[#FF91E7] hover:bg-[#FF91E7] border border-[#4D4D4D] selling-2 px-[1rem] py-[0.75rem] rounded-[0.25rem] text-black">
