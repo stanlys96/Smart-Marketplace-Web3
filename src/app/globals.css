@@ -99,7 +99,7 @@
     --body-bg: #242423;
     --primary: 221 221 221;
     --contrast-primary: 0 0 0;
-    --color: 221 221 221;
+    --color: black;
     --filled: 0 0 0;
     --contrast-filled: 221 221 221;
     --contrast-black: 221 221 221;
@@ -113,7 +113,7 @@ body {
   font-family: var(--font-family);
   background-color: #242423;
   -webkit-font-smoothing: antialiased;
-  color: rgb(var(--color));
+  color: black;
 }
 
 @layer utilities {
@@ -134,12 +134,12 @@ select {
 [aria-haspopup][aria-expanded="true"].button,
 .linky:hover:not(:active):not(:disabled) {
   transform: translate(-0.25rem, -0.25rem);
-  box-shadow: 0.25rem 0.25rem 0rem rgb(var(--color));
+  box-shadow: 0.25rem 0.25rem 0rem black;
 }
 
 /* .tupac {
   transform: translate(-0.25rem, -0.25rem);
-  box-shadow: 0.25rem 0.25rem 0rem rgb(var(--color));
+  box-shadow: 0.25rem 0.25rem 0rem black;
 } */
 
 .selling:hover:not(:active):not(:disabled),
@@ -177,7 +177,7 @@ select {
   background-color: rgb(var(--success));
   --color: var(--contrast-success);
   --parent-color: inherit;
-  color: rgb(var(--color));
+  color: black;
   --active-bg: rgb(var(--color) / 0.1);
 }
 
@@ -192,7 +192,7 @@ select {
   background-color: rgb(var(--danger));
   --color: var(--contrast-danger);
   --parent-color: inherit;
-  color: rgb(var(--color));
+  color: black;
   --active-bg: rgb(var(--color) / 0.1);
 }
 
@@ -207,7 +207,7 @@ select {
   background-color: rgb(var(--warning));
   --color: var(--contrast-warning);
   --parent-color: inherit;
-  color: rgb(var(--color));
+  color: black;
   --active-bg: rgb(var(--color) / 0.1);
 }
 
@@ -222,7 +222,7 @@ select {
   background-color: rgb(var(--info));
   --color: var(--contrast-info);
   --parent-color: inherit;
-  color: rgb(var(--color));
+  color: black;
   --active-bg: rgb(var(--color) / 0.1);
 }
 
@@ -237,7 +237,7 @@ select {
   background-color: rgb(var(--black));
   --color: var(--contrast-black);
   --parent-color: inherit;
-  color: rgb(var(--color));
+  color: black;
   --active-bg: rgb(var(--color) / 0.1);
 }
 
@@ -252,7 +252,7 @@ select {
   background-color: rgb(var(--accent));
   --color: var(--contrast-accent);
   --parent-color: inherit;
-  color: rgb(var(--color));
+  color: black;
   --active-bg: rgb(var(--color) / 0.1);
 }
 
@@ -266,7 +266,7 @@ select {
   background-color: rgb(var(--filled));
   --color: var(--contrast-filled);
   --parent-color: inherit;
-  color: rgb(var(--color));
+  color: black;
   --active-bg: rgb(var(--color) / 0.1);
 }
 
@@ -299,7 +299,7 @@ select {
   background-color: rgb(var(--accent));
   --color: var(--contrast-accent);
   --parent-color: inherit;
-  color: rgb(var(--color));
+  color: black;
   --active-bg: rgb(var(--color) / 0.1);
 }
 
@@ -340,7 +340,7 @@ select {
   background-color: rgb(var(--filled));
   --color: var(--contrast-filled);
   --parent-color: inherit;
-  color: rgb(var(--color));
+  color: black;
   --active-bg: rgb(var(--color) / 0.1);
   border: solid 0.0625rem rgb(var(--parent-color) / var(--border-alpha));
   border-radius: 10rem;
@@ -361,7 +361,7 @@ select {
   background-color: rgb(var(--success));
   --color: var(--contrast-success);
   --parent-color: inherit;
-  color: rgb(var(--color));
+  color: black;
   --active-bg: rgb(var(--color) / 0.1);
   border-color: rgb(var(--success));
 }
@@ -370,7 +370,7 @@ select {
   background-color: rgb(var(--danger));
   --color: var(--contrast-danger);
   --parent-color: inherit;
-  color: rgb(var(--color));
+  color: black;
   --active-bg: rgb(var(--color) / 0.1);
   border-color: rgb(var(--danger));
 }
@@ -379,7 +379,7 @@ select {
   background-color: rgb(var(--warning));
   --color: var(--contrast-warning);
   --parent-color: inherit;
-  color: rgb(var(--color));
+  color: black;
   --active-bg: rgb(var(--color) / 0.1);
   border-color: rgb(var(--warning));
 }
@@ -388,7 +388,7 @@ select {
   background-color: rgb(var(--info));
   --color: var(--contrast-info);
   --parent-color: inherit;
-  color: rgb(var(--color));
+  color: black;
   --active-bg: rgb(var(--color) / 0.1);
   border-color: rgb(var(--info));
 }
@@ -397,7 +397,7 @@ select {
   background-color: rgb(var(--primary));
   --color: var(--contrast-primary);
   --parent-color: inherit;
-  color: rgb(var(--color));
+  color: black;
   --active-bg: rgb(var(--color) / 0.1);
   border-color: rgb(var(--primary));
 }
@@ -406,7 +406,7 @@ select {
   background-color: rgb(var(--black));
   --color: var(--contrast-black);
   --parent-color: inherit;
-  color: rgb(var(--color));
+  color: black;
   --active-bg: rgb(var(--color) / 0.1);
   border-color: rgb(var(--black));
 }
@@ -415,7 +415,7 @@ select {
   background-color: rgb(var(--accent));
   --color: var(--contrast-accent);
   --parent-color: inherit;
-  color: rgb(var(--color));
+  color: black;
   --active-bg: rgb(var(--color) / 0.1);
   border-color: rgb(var(--accent));
 }
@@ -427,7 +427,7 @@ select {
   background-color: rgb(var(--filled));
   --color: var(--contrast-filled);
   --parent-color: inherit;
-  color: rgb(var(--color));
+  color: black;
   --active-bg: rgb(var(--color) / 0.1);
   border-color: rgb(var(--filled));
 }
@@ -609,12 +609,12 @@ aside .close::after {
 
   table:not(.squished table) > tbody > * > *:last-child,
   table:not(.squished table) > tfoot > * > *:last-child {
-    border-right: solid 0.0625rem rgb(var(--parent-color) / var(--border-alpha));
+    border-right: solid 0.0625rem black;
   }
 
   table:not(.squished table) > tbody > * > *,
   table:not(.squished table) > tfoot > * > * {
-    border-top: solid 0.0625rem rgb(var(--parent-color) / var(--border-alpha));
+    border-top: solid 0.0625rem black;
   }
 
   table:not(.squished table) > :last-child > :last-child > :first-child {
@@ -623,8 +623,7 @@ aside .close::after {
 
   table:not(.squished table) > tbody:last-child > tr:last-child > *,
   table:not(.squished table) > tfoot:last-child > tr:last-child > * {
-    border-bottom: solid 0.0625rem
-      rgb(var(--parent-color) / var(--border-alpha));
+    border-bottom: solid 0.0625rem black;
   }
 }
 
@@ -663,7 +662,7 @@ table > tbody > * {
   background-color: rgb(255, 255, 255);
   --color: var(0, 0, 0);
   --parent-color: inherit;
-  color: rgb(var(--color));
+  color: black;
   --active-bg: rgb(var(--color) / 0.1);
 }
 
@@ -730,7 +729,7 @@ table > tfoot > * {
 
 .special-product {
   transform: translate(-0.25rem, -0.25rem);
-  box-shadow: 0.25rem 0.25rem 0rem rgb(var(--color));
+  box-shadow: 0.25rem 0.25rem 0rem black;
   font-size: 1rem;
   line-height: 1.4;
   color: currentcolor;

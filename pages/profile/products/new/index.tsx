@@ -291,7 +291,7 @@ export default function Profile() {
                   >
                     <option value="ETH">ETH</option>
                     <option value="LSK">LSK</option>
-                    <option value="GMR">GMR</option>
+                    <option value="METT">METT</option>
                   </select>
                   <input
                     value={price}

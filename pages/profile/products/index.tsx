@@ -6,17 +6,30 @@ import { IoMdInformationCircleOutline } from "react-icons/io";
 import { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { BsThreeDots } from "react-icons/bs";
+import { useReadContract, useAccount } from "wagmi";
+import MetaverseMarketplaceABI from "../../../src/helper/MetaverseMarketplaceABI.json";
+import MetaverseNFTABI from "../../../src/helper/MetaverseNFTABI.json";
+import MetaverseTokenABI from "../../../src/helper/MetaverseTokenABI.json";
 
 export default function Profile() {
+  const { address } = useAccount();
   const router = useRouter();
   const [hovered, setHovered] = useState(false);
+
+  const result = useReadContract({
+    abi: MetaverseMarketplaceABI,
+    address: process.env.NEXT_PUBLIC_MARKETPLACE_ADDRESS as any,
+    functionName: "getUserListing",
+    account: address,
+  });
+
   return (
     <div className="flex h-[100vh]">
       <div className="w-[12.8125rem] static bg-black h-full">
         <div className="flex justify-center items-center h-[9rem] border-b border-b-[#808080] px-[1.5rem]">
           <Image
             className="flex-1 h-fit"
-            src="/gumroad.svg"
+            src={`/gumroad.svg`}
             width={157}
             height={22}
             alt="logo"
@@ -63,7 +76,7 @@ export default function Profile() {
             </div>
           </div>
         </header>
-        <div className="p-[64px]">
+        <div className="p-[64px] main-body overflow-y-auto">
           <p className="text-black text-[24px] mb-[24px] font-medium">
             Products
           </p>
@@ -79,39 +92,43 @@ export default function Profile() {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td className="icon-cell">
-                  <span className="icon icon-card-image-fill"></span>
-                </td>
-                <td>
-                  <div className="flex flex-col">
-                    <p className="font-semibold">Walao eh</p>
-                    <a className="underline cursor-pointer">
-                      stanlykwok.gumroad.com/l/lpayog
-                    </a>
-                  </div>
-                </td>
-                <td>
-                  <p>0</p>
-                </td>
-                <td>
-                  <p>$0</p>
-                </td>
-                <td>
-                  <p>$100</p>
-                </td>
-                <td>
-                  <div className="flex gap-x-1 items-center">
-                    <span className="icon icon-circle-fill" />
-                    <p>Published</p>
-                  </div>
-                </td>
-                <td className="w-[5%]">
-                  <button className="flex justify-center items-center">
-                    <BsThreeDots />
-                  </button>
-                </td>
-              </tr>
+              {(result?.data as any)?.map((theData: any) => (
+                <tr key={theData?.productCode}>
+                  <td className="icon-cell">
+                    <span className="icon icon-card-image-fill"></span>
+                  </td>
+                  <td>
+                    <div className="flex flex-col">
+                      <p className="font-semibold">{theData?.title}</p>
+                      <a className="underline cursor-pointer">
+                        stanlykwok.gumroad.com/l/{theData?.productUrl}
+                      </a>
+                    </div>
+                  </td>
+                  <td>
+                    <p>0</p>
+                  </td>
+                  <td>
+                    <p>$0</p>
+                  </td>
+                  <td>
+                    <p>
+                      {theData?.price?.toString()} {theData?.currency}
+                    </p>
+                  </td>
+                  <td>
+                    <div className="flex gap-x-1 items-center">
+                      <span className="icon icon-circle-fill" />
+                      <p>{theData?.published ? "Published" : "Unpublished"}</p>
+                    </div>
+                  </td>
+                  <td className="w-[5%]">
+                    <button className="flex justify-center items-center">
+                      <BsThreeDots />
+                    </button>
+                  </td>
+                </tr>
+              ))}
             </tbody>
             <tfoot>
               <tr>
