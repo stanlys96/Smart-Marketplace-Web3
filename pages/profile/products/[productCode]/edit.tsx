@@ -15,6 +15,7 @@ export default function Edit() {
   const [hovered, setHovered] = useState(false);
   const [productName, setProductName] = useState(newProduct?.name);
   const [description, setDescription] = useState("");
+  const [price, setPrice] = useState(newProduct?.price);
   return (
     <div className="flex h-[100vh]">
       <div className="w-[12.8125rem] static bg-black h-full">
@@ -90,34 +91,68 @@ export default function Edit() {
               />
             </div>
             <div className="mt-[20px]">
-              <p>Description</p>
-              <textarea
-                rows={5}
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
+              <p>URL</p>
+              <div className="input-price-product border mt-[10px] flex gap-x-2 items-center">
+                <p className="username-p w-fit">stanlys96.gumroad.com/l/</p>
+                <input
+                  onChange={(e) => {
+                    let inputValue = e.target.value.replace(/[^0-9]/g, "");
+                    if (inputValue.startsWith("0")) {
+                      inputValue = inputValue.slice(1);
+                    }
+                  }}
+                  type="text"
+                  className="bg-transparent outline-none w-full"
+                  placeholder={(productCode as any) ?? ""}
+                />
+              </div>
+            </div>
+            <div className="h-[1px] w-full bg-black my-[50px]" />
+            <p className="text-[28px] mb-[20px]">Cover</p>
+            <div className="file-placeholder flex-col gap-y-3">
+              <button
+                onClick={() => router.push("/profile/products/new")}
+                className="border hover:bg-[#ff90e8] bg-black hover:text-black text-white button border-[#4D4D4D] h-full px-[1rem] py-[0.75rem] rounded-[0.25rem] cursor-pointer text-black"
+              >
+                Upload images
+              </button>
+              <p>
+                Images should be horizontal, at least 1280x720px, and 72 DPI
+                (dots per inch).
+              </p>
+            </div>
+            <div className="h-[1px] w-full bg-black my-[50px]" />
+            <p className="text-[28px] mb-[20px]">Product info</p>
+            <div>
+              <p>Summary</p>
+              <input
+                value={productName}
+                onChange={(e) => setProductName(e.target.value)}
                 className="mt-[10px] input-name-product"
-                placeholder="Product description"
+                type="text"
+                placeholder="Name of product"
               />
             </div>
+            <div className="h-[1px] w-full bg-black my-[50px]" />
+            <p className="text-[28px] mb-[20px]">Pricing</p>
             <div className="mt-[20px]">
-              <p>Description</p>
-              <textarea
-                rows={5}
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                className="mt-[10px] input-name-product"
-                placeholder="Product description"
-              />
-            </div>
-            <div className="mt-[20px]">
-              <p>Description</p>
-              <textarea
-                rows={5}
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                className="mt-[10px] input-name-product"
-                placeholder="Product description"
-              />
+              <p>Price</p>
+              <div className="input-price-product border mt-[10px] flex gap-x-2 items-center">
+                <p className="username-p">{newProduct?.currency}</p>
+                <input
+                  value={price}
+                  onChange={(e) => {
+                    let inputValue = e.target.value.replace(/[^0-9]/g, "");
+                    if (inputValue.startsWith("0")) {
+                      inputValue = inputValue.slice(1);
+                    }
+                    setPrice(inputValue);
+                  }}
+                  type="text"
+                  className="bg-transparent outline-none w-full"
+                  placeholder="Price your product"
+                />
+              </div>
             </div>
           </div>
         </div>

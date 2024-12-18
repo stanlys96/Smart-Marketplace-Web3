@@ -783,6 +783,33 @@ table > tfoot > * {
   white-space: nowrap;
 }
 
+.username-p {
+  display: inline-block;
+  vertical-align: middle;
+  background-color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
+  text-overflow: ellipsis;
+  padding: 0.5rem 0.75rem;
+  border: solid 0.0625rem black;
+  border-radius: 10rem;
+  white-space: nowrap;
+}
+
 .main-body {
   height: calc(100% - 12.5rem);
+}
+
+.file-placeholder {
+  border: dashed 0.0625rem rgb(0, 0, 0);
+  border-radius: 0.25rem;
+  padding: 2rem;
+  background-color: rgb(255, 255, 255);
+  --color: var(--contrast-filled);
+  --parent-color: inherit;
+  color: rgb(0, 0, 0);
+  --active-bg: rgb(var(--color) / 0.1);
+  gap: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
