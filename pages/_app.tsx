@@ -2,11 +2,20 @@ import { AppProps } from "next/app";
 import "../src/app/globals.css";
 import { WagmiProvider } from "wagmi";
 // import { arbitrum, bsc, optimism, polygon, mainnet } from 'viem/chains'
-import { mainnet, arbitrum, optimism, polygon } from "wagmi/chains";
+import {
+  mainnet,
+  arbitrum,
+  optimism,
+  polygon,
+  lisk,
+  liskSepolia,
+} from "wagmi/chains";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 // import { metaMask, injected, walletConnect } from 'wagmi/connectors'
 import { createWeb3Modal } from "@web3modal/wagmi";
 import { defaultWagmiConfig } from "@web3modal/wagmi";
+import { Provider } from "react-redux";
+import { store } from "@/stores";
 
 // "@wagmi/connectors": "^5.1.8",
 // "@web3modal/wagmi": "^5.1.4",
@@ -22,7 +31,7 @@ const metadata = {
   icons: [process.env.NEXT_PUBLIC_ICON_URL ?? ""],
 };
 
-const chains: any = [mainnet, arbitrum, optimism, polygon];
+const chains: any = [mainnet, arbitrum, optimism, polygon, lisk, liskSepolia];
 const config = defaultWagmiConfig({
   chains,
   projectId: PROJECT_ID ?? "",
@@ -42,11 +51,13 @@ export const web3Modal = createWeb3Modal({
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
-      <WagmiProvider config={config}>
-        <QueryClientProvider client={queryClient}>
-          <Component {...pageProps} />
-        </QueryClientProvider>
-      </WagmiProvider>
+      <Provider store={store}>
+        <WagmiProvider config={config}>
+          <QueryClientProvider client={queryClient}>
+            <Component {...pageProps} />
+          </QueryClientProvider>
+        </WagmiProvider>
+      </Provider>
     </>
   );
 }

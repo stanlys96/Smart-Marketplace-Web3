@@ -122,6 +122,11 @@ body {
   }
 }
 
+select {
+  padding-right: 10px; /* Space for the arrow */
+  background-size: 15px;
+}
+
 .button:hover:not(:active):not(:disabled),
 .tab-buttons[role="tablist"] [aria-haspopup][aria-expanded="true"][role="tab"],
 .widget .overlay [aria-haspopup][aria-expanded="true"].close-button,
@@ -687,4 +692,97 @@ table > tfoot > * {
   --parent-color: inherit;
   color: rgb(0, 0, 0);
   --active-bg: rgb(var(--color) / 0.1);
+}
+
+.input-username {
+  font-family: inherit;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  line-height: 1.4;
+  border: solid 0.0625rem rgb(0, 0, 0);
+  border-radius: 0.25rem;
+  display: block;
+  background-color: rgb(255, 255, 255);
+  --color: var(--contrast-filled);
+  --parent-color: inherit;
+  color: rgb(0, 0, 0);
+  --active-bg: rgb(var(--color) / 0.1);
+}
+
+.input-price-product {
+  font-family: inherit;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 0.5rem;
+  padding-right: 1rem;
+  font-size: 1rem;
+  line-height: 1.4;
+  border: solid 0.0625rem rgb(0, 0, 0);
+  border-radius: 0.25rem;
+  display: flex;
+  width: 100%;
+  background-color: rgb(255, 255, 255);
+  --color: var(--contrast-filled);
+  --parent-color: inherit;
+  color: rgb(0, 0, 0);
+  --active-bg: rgb(var(--color) / 0.1);
+}
+
+.special-product {
+  transform: translate(-0.25rem, -0.25rem);
+  box-shadow: 0.25rem 0.25rem 0rem rgb(var(--color));
+  font-size: 1rem;
+  line-height: 1.4;
+  color: currentcolor;
+  font-family: inherit;
+  display: flex;
+  cursor: pointer;
+  transition-timing-function: ease-out;
+  transition-duration: 0.14s;
+  transition-property: transform;
+  /* background: rgba(0, 0, 0, 0); */
+  padding: 0.75rem 1rem;
+  border: 1px solid black;
+  border-radius: 0.25rem;
+  gap: 0.5rem;
+  text-decoration: none;
+  transition-duration: 0.14s;
+  transition-property: transform;
+}
+
+.ordinary-product {
+  background: rgba(0, 0, 0, 0);
+  font-size: 1rem;
+  line-height: 1.4;
+  padding: 0.75rem 1rem;
+  border: solid 0.0625rem black;
+  color: currentColor;
+  border-radius: 0.25rem;
+  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition-timing-function: ease-out;
+  transition-duration: 0.14s;
+  transition-property: transform;
+}
+
+.currency-selector {
+  display: inline-block;
+  vertical-align: middle;
+  background-color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
+  text-overflow: ellipsis;
+  padding: 0.5rem 0.75rem;
+  border: solid 0.0625rem black;
+  border-radius: 10rem;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.main-body {
+  height: calc(100% - 12.5rem);
 }

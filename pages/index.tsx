@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useConnect, useAccount, useDisconnect } from "wagmi";
 import { web3Modal } from "./_app";
 import { useRouter } from "next/router";
@@ -11,6 +11,7 @@ export default function Home() {
   const account = useAccount();
   const [currentCategory, setCurrentCategory] = useState<string>("All");
   const [isHovering, setIsHovering] = useState<boolean>(false);
+  const [domLoaded, setDomLoaded] = useState<boolean>(false);
   const categories = [
     {
       id: 1,
@@ -256,6 +257,10 @@ export default function Home() {
       },
     },
   ];
+  useEffect(() => {
+    setDomLoaded(true);
+  }, []);
+  if (!domLoaded) return <div></div>;
   return (
     <div>
       <div className="px-[20px] lg:px-[100px] py-[30px] flex flex-col gap-5">
@@ -301,12 +306,14 @@ export default function Home() {
               }}
             />
           </button>
-          <button
-            onClick={() => router.push("/profile")}
-            className="bg-[#DDDDDD] hover:bg-[#FF91E7] border border-[#4D4D4D] selling p-[1rem] rounded-[0.25rem] text-black"
-          >
-            Start&nbsp;selling
-          </button>
+          {account?.address && (
+            <button
+              onClick={() => router.push("/profile")}
+              className="bg-[#DDDDDD] hover:bg-[#FF91E7] border border-[#4D4D4D] selling p-[1rem] rounded-[0.25rem] text-black"
+            >
+              Start&nbsp;selling
+            </button>
+          )}
         </nav>
         <div className="hidden lg:flex">
           {categories.map((data) => (
@@ -397,9 +404,11 @@ export default function Home() {
         <p className="text-center text-[18px] lg:text-[24px] text-white">
           With Gumroad, anyone can earn their first dollar online.
         </p>
-        <button className="bg-[#FF91E7] hover:bg-[#FF91E7] border border-[#4D4D4D] selling-2 px-[1rem] py-[0.75rem] rounded-[0.25rem] text-black">
-          Start&nbsp;selling →
-        </button>
+        {account?.address && (
+          <button className="bg-[#FF91E7] hover:bg-[#FF91E7] border border-[#4D4D4D] selling-2 px-[1rem] py-[0.75rem] rounded-[0.25rem] text-black">
+            Start&nbsp;selling →
+          </button>
+        )}
       </footer>
     </div>
   );

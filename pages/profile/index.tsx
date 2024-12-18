@@ -8,6 +8,7 @@ import { useState } from "react";
 export default function Profile() {
   const router = useRouter();
   const [hovered, setHovered] = useState(false);
+  const [username, setUsername] = useState("");
   return (
     <div className="flex h-[100vh]">
       <div className="w-[12.8125rem] static bg-black h-full">
@@ -49,6 +50,25 @@ export default function Profile() {
           </p>
         </header>
         <div className="p-[64px]">
+          <p className="mb-[10px] text-black text-[24px] font-semibold">
+            Username
+          </p>
+          <div className="flex gap-x-2 items-center mb-[24px] ">
+            <input
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="input-username"
+              type="text"
+              placeholder="Type your username"
+              maxLength={25}
+            />
+            <button
+              // onClick={() => router.push("/profile/products/new")}
+              className="border button bg-[#ff90e8] text-[#DDDDDD] border-[#4D4D4D] h-full px-[1rem] py-[0.75rem] rounded-[0.25rem] cursor-pointer text-black"
+            >
+              Submit
+            </button>
+          </div>
           <div className="grid grid-cols-2 gap-[1rem]">
             <div className="p-[1.5rem] text-[2.5rem] border border-black rounded-[0.25rem] bg-white">
               <div className="flex gap-x-2 items-center">
