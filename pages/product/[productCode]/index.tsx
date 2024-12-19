@@ -62,7 +62,7 @@ export default function Home() {
           <Image
             onClick={() => router.push("/")}
             className="md:flex-1 md:h-fit cursor-pointer"
-            src="/gummy-black.svg"
+            src="/logo-small.png"
             width={157}
             height={22}
             alt="logo"

@@ -17,7 +17,7 @@
     "antd": "^5.22.5",
     "axios": "^1.7.9",
     "ethers": "^6.13.4",
-    "next": "14.2.7",
+    "next": "^15.1.2",
     "react": "^18",
     "react-currency-input-field": "^3.9.0",
     "react-dom": "^18",

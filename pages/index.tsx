@@ -158,7 +158,7 @@ export default function Home() {
         <nav className="flex lg:flex-row flex-col gap-[1rem] items-center flex-1">
           <Image
             className="md:flex-1 md:h-fit"
-            src="/gumroad.svg"
+            src="/logo-small.png"
             width={157}
             height={22}
             alt="logo"

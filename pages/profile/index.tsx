@@ -123,7 +123,7 @@ export default function Profile() {
         >
           <Image
             className="flex-1 h-fit"
-            src="/gumroad.svg"
+            src="/logo-small.png"
             width={157}
             height={22}
             alt="logo"

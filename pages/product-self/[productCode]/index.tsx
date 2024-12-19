@@ -1,39 +1,26 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { useConnect, useAccount, useDisconnect, useReadContract } from "wagmi";
+import { useAccount, useDisconnect, useReadContract } from "wagmi";
 import { web3Modal } from "../../_app";
 import { useRouter } from "next/router";
 import { FaStar, FaInfoCircle, FaRegStar } from "react-icons/fa";
-import { useSelector } from "react-redux";
 import MetaverseMarketplaceABI from "../../../src/helper/MetaverseMarketplaceABI.json";
-import MetaverseNFTABI from "../../../src/helper/MetaverseNFTABI.json";
-import MetaverseTokenABI from "../../../src/helper/MetaverseTokenABI.json";
 import { getPinataUrl } from "@/src/helper/helper";
 import { ethers } from "ethers";
 import Swal from "sweetalert2";
 
 export default function Home() {
   const router = useRouter();
-  const { connect } = useConnect();
   const { disconnect } = useDisconnect();
   const { productCode } = router.query;
   const { address } = useAccount();
-  const [currentCategory, setCurrentCategory] = useState<string>("All");
-  const [isHovering, setIsHovering] = useState<boolean>(false);
   const [domLoaded, setDomLoaded] = useState<boolean>(false);
-  const { clickedProduct } = useSelector((state: any) => state.user);
   const result = useReadContract({
     abi: MetaverseMarketplaceABI,
     address: process.env.NEXT_PUBLIC_MARKETPLACE_ADDRESS as any,
     functionName: "getListingByProductCode",
     account: address,
     args: [productCode],
-  });
-  const userProfile = useReadContract({
-    abi: MetaverseMarketplaceABI,
-    address: process.env.NEXT_PUBLIC_MARKETPLACE_ADDRESS as any,
-    functionName: "getUserProfile",
-    args: [address],
   });
   const currentData = result?.data as any;
 
@@ -49,7 +36,7 @@ export default function Home() {
             <Image
               onClick={() => router.push("/")}
               className=" cursor-pointer"
-              src="/gummy-black.svg"
+              src="/logo-small.png"
               width={157}
               height={22}
               alt="logo"
