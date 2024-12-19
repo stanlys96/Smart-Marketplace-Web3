@@ -1,0 +1,179 @@
+.product-card {
+  transition-timing-function: ease-out;
+  transition-duration: 0.14s;
+  transition-property: all;
+  position: relative;
+  background-color: rgb(255, 255, 255);
+  --color: var(--contrast-filled);
+  --parent-color: inherit;
+  color: rgb(0, 0, 0);
+  --active-bg: rgb(var(--color) / 0.1);
+  border: solid 0.0625rem rgb(0, 0, 0);
+  border-radius: 0.25rem;
+}
+
+.product-card-light {
+  transition-timing-function: ease-out;
+  transition-duration: 0.14s;
+  transition-property: all;
+  position: relative;
+  background-color: rgb(255, 255, 255);
+  --color: var(--contrast-filled);
+  --parent-color: inherit;
+  color: rgb(0, 0, 0);
+  --active-bg: rgb(var(--color) / 0.1);
+  border: solid 0.0625rem rgb(255, 255, 255);
+  border-radius: 0.25rem;
+}
+
+.product-card:hover {
+  box-shadow: 0.25rem 0.25rem 0rem rgb(0, 0, 0);
+}
+
+.habibu {
+  color: white !important;
+}
+
+.price-container {
+  position: relative;
+  display: inline-grid;
+}
+
+.product-price-white {
+  display: block;
+  padding: 0.25rem 0.5rem;
+  padding-right: calc(0.5rem + 1em);
+  color: rgb(0, 0, 0);
+  position: relative;
+  border: solid 0.0625rem rgb(255, 255, 255);
+  border-right: 0;
+  background-image: linear-gradient(
+    to left,
+    transparent 1em,
+    rgb(255, 144, 232) 1em
+  );
+  background-repeat: no-repeat;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.product-price {
+  display: block;
+  padding: 0.25rem 0.5rem;
+  padding-right: calc(0.5rem + 1em);
+  color: rgb(0, 0, 0);
+  position: relative;
+  border: solid 0.0625rem rgb(0, 0, 0);
+  border-right: 0;
+  background-image: linear-gradient(
+    to left,
+    transparent 1em,
+    rgb(255, 144, 232) 1em
+  );
+  background-repeat: no-repeat;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.product-price::before,
+.product-price::after {
+  content: "";
+  top: 0;
+  bottom: 0;
+  position: absolute;
+  border-style: solid;
+  border-width: calc(0.25rem + 0.5lh);
+}
+.product-price::before {
+  border-color: rgb(0, 0, 0);
+  right: 0;
+  border-left-width: 0.0625rem;
+}
+.product-price::after {
+  border-color: rgb(255, 144, 232);
+  right: 0.0625rem;
+  border-left: none;
+}
+.product-price::before,
+.product-price::after {
+  border-right: solid rgba(0, 0, 0, 0) 1em;
+}
+.product-price-white::before,
+.product-price-white::after {
+  content: "";
+  top: 0;
+  bottom: 0;
+  position: absolute;
+  border-style: solid;
+  border-width: calc(0.25rem + 0.5lh);
+}
+.product-price-white::before {
+  border-color: rgb(255, 255, 255);
+  right: 0;
+  border-left-width: 0.0625rem;
+}
+.product-price-white::after {
+  border-color: rgb(255, 144, 232);
+  right: 0.0625rem;
+  border-left: none;
+}
+.product-price-white::before,
+.product-price-white::after {
+  border-right: solid rgba(255, 255, 255, 0) 1em;
+}
+
+.main-product-container {
+  padding: 4rem max((100% - 71.25rem) / 2, 4rem);
+}
+.main-product-subcontainer {
+  padding: 1rem;
+}
+
+.info-container {
+  border: 1px solid rgb(144, 168, 237);
+  background-color: rgb(144, 168, 237, 0.5);
+  align-items: start;
+  padding: 0.75rem;
+  gap: 0.5rem;
+  /* border: solid 0.0625rem #fff; */
+  border-radius: 0.25rem;
+}
+
+.info-img::before {
+  width: 1lh;
+  color: rgb(144, 168, 237);
+  mask-image: url("/info-img.svg");
+}
+
+.input-price-product-transparent {
+  font-family: inherit;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 0.5rem;
+  padding-right: 1rem;
+  font-size: 1rem;
+  line-height: 1.4;
+  border: solid 0.0625rem rgb(255, 255, 255);
+  border-radius: 0.25rem;
+  display: flex;
+  width: 100%;
+  background-color: transparent;
+  --color: var(--contrast-filled);
+  --parent-color: inherit;
+  color: rgb(0, 0, 0);
+  --active-bg: rgb(var(--color) / 0.1);
+}
+
+.username-p-transparent {
+  display: inline-block;
+  vertical-align: middle;
+  background-color: transparent;
+  color: rgb(255, 255, 255);
+  text-overflow: ellipsis;
+  padding: 0.5rem 0.75rem;
+  border: solid 0.0625rem white;
+  border-radius: 10rem;
+  white-space: nowrap;
+}
