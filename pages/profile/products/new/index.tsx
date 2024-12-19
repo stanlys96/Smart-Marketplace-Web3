@@ -8,11 +8,13 @@ import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
 import { setNewProduct } from "@/stores/user-slice";
 import { generateRandomString } from "@/src/helper/helper";
+import { BsPersonFill } from "react-icons/bs";
 
 export default function Profile() {
   const dispatch = useDispatch();
   const router = useRouter();
   const [hovered, setHovered] = useState(false);
+  const [hovered2, setHovered2] = useState(false);
   const [selected, setSelected] = useState("Digital product");
   const [currency, setCurrency] = useState("ETH");
   const [price, setPrice] = useState("");
@@ -82,6 +84,7 @@ export default function Profile() {
             alt="logo"
           />
         </div>
+
         <div
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
@@ -91,6 +94,20 @@ export default function Profile() {
           <FaHome color={`${hovered ? "#ff90e8" : "#ffffff"}`} size="1.4rem" />
           <p className={`text-[1rem] ${hovered ? "text-pink" : "text-white"}`}>
             Home
+          </p>
+        </div>
+        <div
+          onMouseEnter={() => setHovered2(true)}
+          onMouseLeave={() => setHovered2(false)}
+          onClick={() => router.push("/user-profile")}
+          className="py-[1rem] cursor-pointer flex gap-x-[10px] items-center border-b border-b-[#808080] px-[1.5rem]"
+        >
+          <BsPersonFill
+            color={`${hovered2 ? "#ff90e8" : "#ffffff"}`}
+            size="22px"
+          />
+          <p className={`text-[1rem] ${hovered2 ? "text-pink" : "text-white"}`}>
+            Profile
           </p>
         </div>
         <div
@@ -134,7 +151,7 @@ export default function Profile() {
                         icon: "info",
                       });
                     }
-                    if (parseInt(price) === 0) {
+                    if (parseFloat(price) === 0) {
                       return Swal.fire({
                         title: "Price value",
                         text: "Please enter price more than 0",
@@ -146,7 +163,7 @@ export default function Profile() {
                       setNewProduct({
                         code: productCode,
                         name: productName,
-                        price: parseInt(price),
+                        price: parseFloat(price),
                         currency: currency,
                         type: selected,
                       })
@@ -290,7 +307,6 @@ export default function Profile() {
                     className="currency-selector"
                   >
                     <option value="ETH">ETH</option>
-                    <option value="LSK">LSK</option>
                     <option value="METT">METT</option>
                   </select>
                   <input

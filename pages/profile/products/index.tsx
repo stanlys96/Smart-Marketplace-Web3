@@ -5,16 +5,37 @@ import { MdShoppingBag } from "react-icons/md";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import { useState } from "react";
 import { FaSearch } from "react-icons/fa";
-import { BsThreeDots } from "react-icons/bs";
-import { useReadContract, useAccount } from "wagmi";
+import { BsPersonFill, BsThreeDots } from "react-icons/bs";
+import { useReadContract, useAccount, useWriteContract } from "wagmi";
 import MetaverseMarketplaceABI from "../../../src/helper/MetaverseMarketplaceABI.json";
 import MetaverseNFTABI from "../../../src/helper/MetaverseNFTABI.json";
 import MetaverseTokenABI from "../../../src/helper/MetaverseTokenABI.json";
+import { notification, Popover } from "antd";
+import { config, marketplaceAddress } from "@/src/helper/helper";
+import { waitForTransactionReceipt } from "wagmi/actions";
+import { FidgetSpinner } from "react-loader-spinner";
+
+const filterResult = (theData: any) => {
+  return theData?.title;
+};
 
 export default function Profile() {
   const { address } = useAccount();
   const router = useRouter();
   const [hovered, setHovered] = useState(false);
+  const [hovered2, setHovered2] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const { data: hash, writeContractAsync } = useWriteContract();
+  const [theDataPopOver, setTheDataPopOver] = useState<any>([]);
+
+  const hide = () => {
+    setOpen(false);
+  };
+
+  const handleOpenChange = (newOpen: boolean) => {
+    setOpen(newOpen);
+  };
 
   const result = useReadContract({
     abi: MetaverseMarketplaceABI,
@@ -22,9 +43,26 @@ export default function Profile() {
     functionName: "getUserListing",
     account: address,
   });
-
+  console.log(result, "<<< ");
   return (
     <div className="flex h-[100vh]">
+      {loading && (
+        <div className="bg-black/50 z-1000 absolute h-[100vh] w-[100vw] flex justify-center items-center">
+          <div className="flex flex-col gap-y-4 items-center justify-center">
+            <FidgetSpinner
+              visible={true}
+              height="160"
+              width="160"
+              ariaLabel="fidget-spinner-loading"
+              wrapperStyle={{}}
+              wrapperClass="fidget-spinner-wrapper"
+            />
+            <p className="text-white font-bold text-[24px] text-center">
+              Loading...
+            </p>
+          </div>
+        </div>
+      )}
       <div className="w-[12.8125rem] static bg-black h-full">
         <div className="flex justify-center items-center h-[9rem] border-b border-b-[#808080] px-[1.5rem]">
           <Image
@@ -44,6 +82,20 @@ export default function Profile() {
           <FaHome color={`${hovered ? "#ff90e8" : "#ffffff"}`} size="1.4rem" />
           <p className={`text-[1rem] ${hovered ? "text-pink" : "text-white"}`}>
             Home
+          </p>
+        </div>
+        <div
+          onMouseEnter={() => setHovered2(true)}
+          onMouseLeave={() => setHovered2(false)}
+          onClick={() => router.push("/user-profile")}
+          className="py-[1rem] cursor-pointer flex gap-x-[10px] items-center border-b border-b-[#808080] px-[1.5rem]"
+        >
+          <BsPersonFill
+            color={`${hovered2 ? "#ff90e8" : "#ffffff"}`}
+            size="22px"
+          />
+          <p className={`text-[1rem] ${hovered2 ? "text-pink" : "text-white"}`}>
+            Profile
           </p>
         </div>
         <div
@@ -80,68 +132,144 @@ export default function Profile() {
           <p className="text-black text-[24px] mb-[24px] font-medium">
             Products
           </p>
-          <table className="w-full">
-            <thead>
-              <tr>
-                <th />
-                <th>Name</th>
-                <th>Sales</th>
-                <th>Revenue</th>
-                <th>Price</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {(result?.data as any)?.map((theData: any) => (
-                <tr key={theData?.productCode}>
-                  <td className="icon-cell">
-                    <span className="icon icon-card-image-fill"></span>
+          {(result?.data as any)?.filter(filterResult)?.length > 0 ? (
+            <table className="w-full">
+              <thead>
+                <tr>
+                  <th />
+                  <th>Name</th>
+                  <th>Sales</th>
+                  <th>Revenue</th>
+                  <th>Price</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {(result?.data as any)
+                  ?.filter(filterResult)
+                  .map((theData: any, index: number) => (
+                    <tr key={theData?.productCode}>
+                      <td className="icon-cell">
+                        <span className="icon icon-card-image-fill"></span>
+                      </td>
+                      <td>
+                        <div className="flex flex-col">
+                          <p className="font-semibold">{theData?.title}</p>
+                          <a
+                            target="_blank"
+                            href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/product-self/
+                        ${theData?.productUrl}`}
+                            className="underline cursor-pointer"
+                          >
+                            {process.env.NEXT_PUBLIC_FRONTEND_URL}/product-self/
+                            {theData?.productUrl}
+                          </a>
+                        </div>
+                      </td>
+                      <td>
+                        <p>0</p>
+                      </td>
+                      <td>
+                        <p>$0</p>
+                      </td>
+                      <td>
+                        <p>
+                          {theData?.price?.toString()} {theData?.currency}
+                        </p>
+                      </td>
+                      <td>
+                        <div className="flex gap-x-1 items-center">
+                          <span
+                            className={`${
+                              theData?.published ? "icon-green" : "icon-black"
+                            } icon-circle-fill`}
+                          />
+                          <p>
+                            {theData?.published ? "Published" : "Unpublished"}
+                          </p>
+                        </div>
+                      </td>
+                      <td className="w-[5%]">
+                        <Popover
+                          content={
+                            <a
+                              className="font-bold"
+                              onClick={async () => {
+                                try {
+                                  setLoading(true);
+                                  const falseArray = new Array(
+                                    (result?.data as any).length
+                                  ).fill(false);
+                                  setTheDataPopOver([...falseArray]);
+                                  const secondResponse =
+                                    await writeContractAsync({
+                                      address: marketplaceAddress ?? "",
+                                      abi: MetaverseMarketplaceABI,
+                                      functionName: "changeListingVisibility",
+                                      args: [
+                                        theData?.productCode,
+                                        !theData?.published,
+                                      ],
+                                    });
+                                  const transactionReceipt =
+                                    await waitForTransactionReceipt(config, {
+                                      hash: secondResponse,
+                                      confirmations: 2,
+                                    });
+                                  if (
+                                    transactionReceipt?.status === "success"
+                                  ) {
+                                    notification.success({
+                                      message: "Success!",
+                                      description:
+                                        "You have successfully created a product!",
+                                      placement: "topRight",
+                                    });
+                                    result?.refetch();
+                                  }
+                                  setLoading(false);
+                                } catch (e) {
+                                  setLoading(false);
+                                }
+                              }}
+                            >
+                              {theData?.published ? "Unpublish" : "Publish"}
+                            </a>
+                          }
+                          trigger="click"
+                          open={theDataPopOver[index]}
+                          onOpenChange={(newOpen) => {
+                            const falseArray = new Array(
+                              (result?.data as any).length
+                            ).fill(false);
+                            let temp = [...falseArray];
+                            temp[index] = newOpen;
+                            setTheDataPopOver([...temp]);
+                          }}
+                        >
+                          <button className="flex justify-center items-center">
+                            <BsThreeDots />
+                          </button>
+                        </Popover>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td className="font-bold" colSpan={2}>
+                    Totals
                   </td>
-                  <td>
-                    <div className="flex flex-col">
-                      <p className="font-semibold">{theData?.title}</p>
-                      <a className="underline cursor-pointer">
-                        stanlykwok.gumroad.com/l/{theData?.productUrl}
-                      </a>
-                    </div>
-                  </td>
-                  <td>
-                    <p>0</p>
-                  </td>
-                  <td>
-                    <p>$0</p>
-                  </td>
-                  <td>
-                    <p>
-                      {theData?.price?.toString()} {theData?.currency}
-                    </p>
-                  </td>
-                  <td>
-                    <div className="flex gap-x-1 items-center">
-                      <span className="icon icon-circle-fill" />
-                      <p>{theData?.published ? "Published" : "Unpublished"}</p>
-                    </div>
-                  </td>
-                  <td className="w-[5%]">
-                    <button className="flex justify-center items-center">
-                      <BsThreeDots />
-                    </button>
+                  <td className="font-bold">0</td>
+                  <td className="font-bold" colSpan={5}>
+                    $0
                   </td>
                 </tr>
-              ))}
-            </tbody>
-            <tfoot>
-              <tr>
-                <td className="font-bold" colSpan={2}>
-                  Totals
-                </td>
-                <td className="font-bold">0</td>
-                <td className="font-bold" colSpan={5}>
-                  $0
-                </td>
-              </tr>
-            </tfoot>
-          </table>
+              </tfoot>
+            </table>
+          ) : (
+            <p>You have not created any product yet...</p>
+          )}
         </div>
       </div>
     </div>

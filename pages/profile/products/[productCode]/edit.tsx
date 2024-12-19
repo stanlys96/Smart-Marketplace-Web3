@@ -24,6 +24,8 @@ import {
 } from "wagmi";
 import { notification } from "antd";
 import { waitForTransactionReceipt } from "@wagmi/core";
+import { BsPersonFill } from "react-icons/bs";
+import Swal from "sweetalert2";
 
 export default function Edit() {
   const fileInputRef = useRef(null);
@@ -32,6 +34,7 @@ export default function Edit() {
   const { productCode } = router.query;
   const { newProduct } = useSelector((state: any) => state.user);
   const [hovered, setHovered] = useState(false);
+  const [hovered2, setHovered2] = useState(false);
   const [productName, setProductName] = useState(newProduct?.name);
   const [description, setDescription] = useState("");
   const [productUrl, setProductUrl] = useState("");
@@ -114,6 +117,20 @@ export default function Edit() {
           </p>
         </div>
         <div
+          onMouseEnter={() => setHovered2(true)}
+          onMouseLeave={() => setHovered2(false)}
+          onClick={() => router.push("/user-profile")}
+          className="py-[1rem] cursor-pointer flex gap-x-[10px] items-center border-b border-b-[#808080] px-[1.5rem]"
+        >
+          <BsPersonFill
+            color={`${hovered2 ? "#ff90e8" : "#ffffff"}`}
+            size="22px"
+          />
+          <p className={`text-[1rem] ${hovered2 ? "text-pink" : "text-white"}`}>
+            Profile
+          </p>
+        </div>
+        <div
           onClick={() => router.push("/profile/products")}
           className="py-[1rem] cursor-pointer flex gap-x-[10px] items-center border-b border-b-[#808080] px-[1.5rem]"
         >
@@ -131,6 +148,13 @@ export default function Edit() {
               <button
                 disabled={loading}
                 onClick={async () => {
+                  if (!productName || !description || !productInfo || !price) {
+                    return Swal.fire(
+                      "Field Not Filled",
+                      "Please fill the necessary input fields!",
+                      "info"
+                    );
+                  }
                   try {
                     setLoading(true);
                     const result = await createTokenURI(
@@ -168,7 +192,6 @@ export default function Edit() {
                         confirmations: 2,
                       }
                     );
-                    console.log(transactionReceipt);
                     if (transactionReceipt?.status === "success") {
                       notification.success({
                         message: "Success!",
@@ -222,7 +245,8 @@ export default function Edit() {
               <div className="input-price-product border mt-[10px] flex gap-x-2 items-center">
                 <p className="username-p w-fit">stanlys96.gumroad.com/l/</p>
                 <input
-                  value={productUrl}
+                  disabled
+                  value={productCode}
                   onChange={(e) => {
                     if (e.target.value[e.target.value.length - 1] === " ")
                       return;

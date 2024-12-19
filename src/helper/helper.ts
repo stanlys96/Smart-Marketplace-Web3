@@ -91,6 +91,19 @@ export function generateRandomString(length: number = 8): string {
   return result;
 }
 
+export function formatCurrencyString(value: string): string {
+  try {
+    const numberValue = parseFloat(value);
+
+    return numberValue.toLocaleString("en-US", {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 5,
+    });
+  } catch (e) {
+    return "0";
+  }
+}
+
 export const marketplaceAddress: any =
   process.env.NEXT_PUBLIC_MARKETPLACE_ADDRESS;
 export const NFTAddress: any = process.env.NEXT_PUBLIC_NFT_ADDRESS;

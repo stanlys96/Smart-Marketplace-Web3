@@ -646,10 +646,22 @@ table > tfoot > * > * {
   mask-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTYuMDE0IDQuMDI4YTQgNCAwIDAgMC00IDR2OGE0IDQgMCAwIDAgNCA0aDEyYTQgNCAwIDAgMCA0LTR2LThhNCA0IDAgMCAwLTQtNGgtMTJabTExIDRhMSAxIDAgMSAxIDAgMiAxIDEgMCAwIDEgMC0yWm0tOC41IDMuNjI1YzEuNDIzLS4xMzYgMi44MzQgMS4yMDQgNC42NTcgMy45MzcuMzA2LjQ2Ljk0Ni41ODggMS40MDYuMjgyIDIuNDk4LTEuNjY1IDMuMDU4LTEuODI3IDUuNDA2LjVhMS45ODQgMS45ODQgMCAwIDEtMS45NjkgMS42NTZoLTEyYTIuMDE4IDIuMDE4IDAgMCAxLTItMS43OGMxLjY4LTIuODY0IDMuMTQxLTQuNDY1IDQuNS00LjU5NVoiIGZpbGw9IiMwMDAiLz48L3N2Zz4=);
 }
 
-.icon {
+.icon-black {
   content: "\a0";
   display: inline-block;
   background: currentColor;
+  min-height: max(1lh, 1em);
+  width: 1em;
+  mask-position: 50% 50%;
+  mask-size: 120%;
+  mask-repeat: no-repeat;
+  flex-shrink: 0;
+}
+
+.icon-green {
+  content: "\a0";
+  display: inline-block;
+  background: green;
   min-height: max(1lh, 1em);
   width: 1em;
   mask-position: 50% 50%;

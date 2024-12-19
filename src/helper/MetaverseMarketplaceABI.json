@@ -252,9 +252,15 @@
         "internalType": "string",
         "name": "username",
         "type": "string"
+      },
+      {
+        "indexed": true,
+        "internalType": "string",
+        "name": "profileImageUrl",
+        "type": "string"
       }
     ],
-    "name": "SetUsername",
+    "name": "SetUserProfile",
     "type": "event"
   },
   {
@@ -775,13 +781,31 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "getUsername",
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "profileOwner",
+        "type": "address"
+      }
+    ],
+    "name": "getUserProfile",
     "outputs": [
       {
-        "internalType": "string",
+        "components": [
+          {
+            "internalType": "string",
+            "name": "username",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "profileImageUrl",
+            "type": "string"
+          }
+        ],
+        "internalType": "struct MetaverseMarketplace.UserProfile",
         "name": "",
-        "type": "string"
+        "type": "tuple"
       }
     ],
     "stateMutability": "view",
@@ -883,9 +907,14 @@
         "internalType": "string",
         "name": "newUsername",
         "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "profileImageUrl",
+        "type": "string"
       }
     ],
-    "name": "setUsername",
+    "name": "setUserProfile",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
