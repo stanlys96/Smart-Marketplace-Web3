@@ -20,7 +20,7 @@ import { store } from "@/stores";
 // "@wagmi/connectors": "^5.1.8",
 // "@web3modal/wagmi": "^5.1.4",
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({});
 
 const PROJECT_ID = process.env.NEXT_PUBLIC_PROJECT_ID;
 

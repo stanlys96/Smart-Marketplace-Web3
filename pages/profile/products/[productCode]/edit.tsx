@@ -165,8 +165,10 @@ export default function Edit() {
                       config,
                       {
                         hash: secondResponse,
+                        confirmations: 2,
                       }
                     );
+                    console.log(transactionReceipt);
                     if (transactionReceipt?.status === "success") {
                       notification.success({
                         message: "Success!",
