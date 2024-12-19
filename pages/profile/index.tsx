@@ -63,7 +63,7 @@ export default function Profile() {
   const mettBalance = getBalance(config, {
     address: address ?? "0x0000000000000000000000000000000000000000",
     token:
-      process.env.NEXT_PUBLIC_METAVERSE_TOKEN_ADDRESS ??
+      (process.env.NEXT_PUBLIC_METAVERSE_TOKEN_ADDRESS as any) ??
       "0x0000000000000000000000000000000000000000",
   });
 

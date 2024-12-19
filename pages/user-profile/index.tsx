@@ -71,7 +71,7 @@ export default function Profile() {
   const mettBalance = getBalance(config, {
     address: address ?? "0x0000000000000000000000000000000000000000",
     token:
-      process.env.NEXT_PUBLIC_METAVERSE_TOKEN_ADDRESS ??
+      (process.env.NEXT_PUBLIC_METAVERSE_TOKEN_ADDRESS as any) ??
       "0x0000000000000000000000000000000000000000",
   });
   const lskBalance = getBalance(config, {
@@ -106,8 +106,8 @@ export default function Profile() {
     setDomLoaded(true);
     result.refetch().then((theResult) => {
       console.log(theResult);
-      setUsername(theResult?.data?.username);
-      setPreviewUrl(theResult?.data?.profileImageUrl);
+      setUsername((theResult?.data as any)?.username);
+      setPreviewUrl((theResult?.data as any)?.profileImageUrl);
     });
   }, []);
   if (!domLoaded) return <div></div>;
