@@ -11,13 +11,16 @@ import MetaverseMarketplaceABI from "../../../src/helper/MetaverseMarketplaceABI
 import MetaverseNFTABI from "../../../src/helper/MetaverseNFTABI.json";
 import MetaverseTokenABI from "../../../src/helper/MetaverseTokenABI.json";
 import { notification, Popover } from "antd";
-import { config, marketplaceAddress } from "@/src/helper/helper";
+import {
+  config,
+  filterResult,
+  formatCurrencyString,
+  marketplaceAddress,
+} from "@/src/helper/helper";
 import { waitForTransactionReceipt } from "wagmi/actions";
 import { FidgetSpinner } from "react-loader-spinner";
-
-const filterResult = (theData: any) => {
-  return theData?.title;
-};
+import { useDispatch } from "react-redux";
+import { setClickedProduct } from "@/stores/user-slice";
 
 export default function Profile() {
   const { address } = useAccount();
@@ -28,7 +31,7 @@ export default function Profile() {
   const [loading, setLoading] = useState(false);
   const { data: hash, writeContractAsync } = useWriteContract();
   const [theDataPopOver, setTheDataPopOver] = useState<any>([]);
-
+  const dispatch = useDispatch();
   const hide = () => {
     setOpen(false);
   };
@@ -43,7 +46,7 @@ export default function Profile() {
     functionName: "getUserListing",
     account: address,
   });
-  console.log(result, "<<< ");
+
   return (
     <div className="flex h-[100vh]">
       {loading && (
@@ -64,10 +67,13 @@ export default function Profile() {
         </div>
       )}
       <div className="w-[12.8125rem] static bg-black h-full">
-        <div className="flex justify-center items-center h-[9rem] border-b border-b-[#808080] px-[1.5rem]">
+        <div
+          onClick={() => router.push("/")}
+          className="flex cursor-pointer justify-center items-center h-[9rem] border-b border-b-[#808080] px-[1.5rem]"
+        >
           <Image
             className="flex-1 h-fit"
-            src={`/gumroad.svg`}
+            src="/gumroad.svg"
             width={157}
             height={22}
             alt="logo"
@@ -156,10 +162,9 @@ export default function Profile() {
                         <div className="flex flex-col">
                           <p className="font-semibold">{theData?.title}</p>
                           <a
-                            target="_blank"
-                            href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/product-self/
-                        ${theData?.productUrl}`}
                             className="underline cursor-pointer"
+                            target="_blank"
+                            href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/product-self/${theData?.productCode}`}
                           >
                             {process.env.NEXT_PUBLIC_FRONTEND_URL}/product-self/
                             {theData?.productUrl}
@@ -174,7 +179,8 @@ export default function Profile() {
                       </td>
                       <td>
                         <p>
-                          {theData?.price?.toString()} {theData?.currency}
+                          {formatCurrencyString(theData?.price?.toString())}{" "}
+                          {theData?.currency}
                         </p>
                       </td>
                       <td>
@@ -192,49 +198,61 @@ export default function Profile() {
                       <td className="w-[5%]">
                         <Popover
                           content={
-                            <a
-                              className="font-bold"
-                              onClick={async () => {
-                                try {
-                                  setLoading(true);
-                                  const falseArray = new Array(
-                                    (result?.data as any).length
-                                  ).fill(false);
-                                  setTheDataPopOver([...falseArray]);
-                                  const secondResponse =
-                                    await writeContractAsync({
-                                      address: marketplaceAddress ?? "",
-                                      abi: MetaverseMarketplaceABI,
-                                      functionName: "changeListingVisibility",
-                                      args: [
-                                        theData?.productCode,
-                                        !theData?.published,
-                                      ],
-                                    });
-                                  const transactionReceipt =
-                                    await waitForTransactionReceipt(config, {
-                                      hash: secondResponse,
-                                      confirmations: 2,
-                                    });
-                                  if (
-                                    transactionReceipt?.status === "success"
-                                  ) {
-                                    notification.success({
-                                      message: "Success!",
-                                      description:
-                                        "You have successfully created a product!",
-                                      placement: "topRight",
-                                    });
-                                    result?.refetch();
+                            <div className="flex flex-col gap-y-2">
+                              <a
+                                className="font-bold border-b pb-2"
+                                onClick={async () => {
+                                  try {
+                                    setLoading(true);
+                                    const falseArray = new Array(
+                                      (result?.data as any).length
+                                    ).fill(false);
+                                    setTheDataPopOver([...falseArray]);
+                                    const secondResponse =
+                                      await writeContractAsync({
+                                        address: marketplaceAddress ?? "",
+                                        abi: MetaverseMarketplaceABI,
+                                        functionName: "changeListingVisibility",
+                                        args: [
+                                          theData?.productCode,
+                                          !theData?.published,
+                                        ],
+                                      });
+                                    const transactionReceipt =
+                                      await waitForTransactionReceipt(config, {
+                                        hash: secondResponse,
+                                        confirmations: 2,
+                                      });
+                                    if (
+                                      transactionReceipt?.status === "success"
+                                    ) {
+                                      notification.success({
+                                        message: "Success!",
+                                        description:
+                                          "You have successfully created a product!",
+                                        placement: "topRight",
+                                      });
+                                      result?.refetch();
+                                    }
+                                    setLoading(false);
+                                  } catch (e) {
+                                    setLoading(false);
                                   }
-                                  setLoading(false);
-                                } catch (e) {
-                                  setLoading(false);
-                                }
-                              }}
-                            >
-                              {theData?.published ? "Unpublish" : "Publish"}
-                            </a>
+                                }}
+                              >
+                                {theData?.published ? "Unpublish" : "Publish"}
+                              </a>
+                              <a
+                                onClick={() => {
+                                  router.push(
+                                    `/profile/products/${theData?.productCode}/edit`
+                                  );
+                                }}
+                                className="font-bold"
+                              >
+                                Edit Product
+                              </a>
+                            </div>
                           }
                           trigger="click"
                           open={theDataPopOver[index]}

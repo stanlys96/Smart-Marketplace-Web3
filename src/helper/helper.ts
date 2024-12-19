@@ -104,6 +104,14 @@ export function formatCurrencyString(value: string): string {
   }
 }
 
+export function getPinataUrl(value: string): string {
+  return `https://gateway.pinata.cloud/ipfs/${value}`;
+}
+
+export const filterResult = (theData: any) => {
+  return theData?.title;
+};
+
 export const marketplaceAddress: any =
   process.env.NEXT_PUBLIC_MARKETPLACE_ADDRESS;
 export const NFTAddress: any = process.env.NEXT_PUBLIC_NFT_ADDRESS;

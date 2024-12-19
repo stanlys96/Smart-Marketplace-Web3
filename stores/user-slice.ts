@@ -6,8 +6,9 @@ const initialState = {
     type: "",
     name: "",
     price: 0,
-    currency: ""
-  }
+    currency: "",
+  },
+  clickedProduct: {},
 };
 
 export const userSlice = createSlice({
@@ -21,11 +22,12 @@ export const userSlice = createSlice({
       state.newProduct.price = action.payload.price;
       state.newProduct.currency = action.payload.currency;
     },
+    setClickedProduct: (state, action) => {
+      state.clickedProduct = action.payload;
+    },
   },
 });
 
 const { actions, reducer } = userSlice;
-export const {
-  setNewProduct
-} = actions;
+export const { setNewProduct, setClickedProduct } = actions;
 export default reducer;

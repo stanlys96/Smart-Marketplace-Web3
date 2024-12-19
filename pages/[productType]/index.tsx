@@ -1,9 +1,12 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { useConnect, useAccount, useDisconnect } from "wagmi";
+import { useConnect, useAccount, useDisconnect, useReadContract } from "wagmi";
 import { web3Modal } from "../_app";
 import { useRouter } from "next/router";
 import { FaStar } from "react-icons/fa";
+import MetaverseMarketplaceABI from "../../src/helper/MetaverseMarketplaceABI.json";
+import { getPinataUrl } from "@/src/helper/helper";
+import { IoMdPerson } from "react-icons/io";
 
 export default function Home() {
   const router = useRouter();
@@ -11,7 +14,6 @@ export default function Home() {
   const { disconnect } = useDisconnect();
   const { productType } = router.query;
   const account = useAccount();
-  const [currentCategory, setCurrentCategory] = useState<string>("All");
   const [isHovering, setIsHovering] = useState<boolean>(false);
   const [domLoaded, setDomLoaded] = useState<boolean>(false);
   const categories = [
@@ -52,104 +54,21 @@ export default function Home() {
       title: "Coffee",
     },
   ];
-  const products = [
-    {
-      id: 1,
-      title: "Digital product",
-      description:
-        "Perfect your craft with the same tools used at Dreamworks and Pixar.",
-      imgUrl: "/product.png",
-      attributes: {
-        creators: "16K",
-        products: "93K",
-        sales: "21M",
-      },
-    },
-    {
-      id: 2,
-      title: "Course or tutorial",
-      imgUrl: "/course.png",
-      description:
-        "Code, design, and ship your dream product with these technical resources.",
-      attributes: {
-        creators: "24K",
-        products: "98K",
-        sales: "31M",
-      },
-    },
-    {
-      id: 3,
-      title: "E-book",
-      imgUrl: "/ebook.png",
-      description:
-        "Tutorials, plugins, and brushes from pro concept artists and illustrators.",
-      attributes: {
-        creators: "19K",
-        products: "115K",
-        sales: "27M",
-      },
-    },
-    {
-      id: 4,
-      title: "Membership",
-      imgUrl: "/membership.png",
-      description:
-        "Learn to code and tools to help you code more productively.",
-      attributes: {
-        creators: "10K",
-        products: "36K",
-        sales: "11M",
-      },
-    },
-    {
-      id: 5,
-      title: "Bundle",
-      imgUrl: "/bundle.png",
-      description:
-        "Move your body and your audience with guides, videos, and more.",
-      attributes: {
-        creators: "18K",
-        products: "52K",
-        sales: "9M",
-      },
-    },
-    {
-      id: 6,
-      title: "Commission",
-      imgUrl: "/commission.png",
-      description:
-        "Whether you're looking to shed or shred, here are coaches to pump you up.",
-      attributes: {
-        creators: "5K",
-        products: "14K",
-        sales: "1M",
-      },
-    },
-    {
-      id: 7,
-      title: "Call",
-      imgUrl: "/call.png",
-      description:
-        "Tracks, beats, and loops from the best musicians and engineers in the biz.",
-      attributes: {
-        creators: "11K",
-        products: "80K",
-        sales: "10M",
-      },
-    },
-    {
-      id: 8,
-      title: "Coffee",
-      imgUrl: "/coffee.png",
-      description:
-        "Get snapping with pro presets, stock imagery, and digi darkroom needs.",
-      attributes: {
-        creators: "8K",
-        products: "68K",
-        sales: "4M",
-      },
-    },
-  ];
+  const result = useReadContract({
+    abi: MetaverseMarketplaceABI,
+    address: process.env.NEXT_PUBLIC_MARKETPLACE_ADDRESS as any,
+    functionName: "getListingByProductType",
+    account: account?.address,
+    args: [productType],
+  });
+  const filterForMarketplace = (theData: any) => {
+    return (
+      theData?.title &&
+      theData?.published &&
+      theData?.seller !== account?.address
+    );
+  };
+  const finalData = (result?.data as any)?.filter(filterForMarketplace);
   useEffect(() => {
     setDomLoaded(true);
   }, []);
@@ -159,7 +78,8 @@ export default function Home() {
       <div className="px-[20px] bg-white text-black lg:px-[100px] py-[30px] flex flex-col gap-5 md:h-[25vh]">
         <nav className="flex lg:flex-row flex-col gap-[1rem] items-center flex-1">
           <Image
-            className="md:flex-1 md:h-fit"
+            onClick={() => router.push("/")}
+            className="md:flex-1 md:h-fit cursor-pointer"
             src="/gummy-black.svg"
             width={157}
             height={22}
@@ -241,54 +161,80 @@ export default function Home() {
       </div>
       <div className="h-[1px] w-full bg-[#646564]" />
       <div className="h-[75vh] bg-[#F4F4F0] overflow-y-auto">
-        <div className="lg:px-[100px] px-[20px] h-fit py-[30px]">
+        <div className="lg:px-[100px] px-[20px] py-[30px]">
           <p className="text-[24px] mb-[15px] text-black">{productType}</p>
-          <div className="grid lg:grid-cols-4 gap-5">
-            <div
-              onClick={() => router.push(`/product/${"qjdkasdmi"}`)}
-              className="product-card cursor-pointer pb-[10px] flex flex-col items-start justify-center"
-            >
-              <Image
-                layout="contain"
-                width={254}
-                height={255}
-                alt="business"
-                src="/habibu.png"
-                className="w-full align-middle h-fit"
-              />
-              <div className="flex flex-col gap-y-4 py-[15px] px-[1rem] border-t border-b border-black w-full">
-                <div className="text-ellipsis whitespace-nowrap break-words">
-                  <p className="font-semibold truncate h-full whitespace-nowrap break-words">
-                    Walao
-                  </p>
-                </div>
-                <div className="flex gap-x-2 items-center">
+          <div
+            className={`${
+              finalData?.length > 0 ? "grid lg:grid-cols-4" : ""
+            } gap-5 h-full`}
+          >
+            {finalData?.length > 0 ? (
+              finalData.map((theResult: any, index: number) => (
+                <div
+                  onClick={() =>
+                    router.push(`/product/${theResult?.productCode}`)
+                  }
+                  className="product-card cursor-pointer pb-[10px] flex flex-col items-start justify-center"
+                >
                   <Image
-                    className="rounded-full"
-                    width={30}
-                    height={30}
-                    alt="user"
-                    src="/call.png"
+                    layout="contain"
+                    width={254}
+                    height={255}
+                    alt="business"
+                    src={
+                      theResult?.imageUrl
+                        ? getPinataUrl(theResult?.imageUrl ?? "")
+                        : "/audio.svg"
+                    }
+                    className="w-full align-middle h-[200px] rounded-t-[0.25rem]"
                   />
-                  <p className="underline">Stanlys96</p>
-                </div>
-                <div className="flex gap-x-1 items-center">
-                  <FaStar />
-                  <p>5.0 (808)</p>
-                </div>
-              </div>
-              <div className="px-[1rem] py-[0.5rem] mt-2 flex justify-start w-full">
-                <div className="price-container">
-                  <div className="product-price">
-                    <p>100 ETH</p>
+                  <div className="flex flex-col gap-y-4 py-[15px] px-[1rem] border-t border-b border-black w-full">
+                    <div className="text-ellipsis whitespace-nowrap break-words">
+                      <p className="font-semibold truncate h-full whitespace-nowrap break-words">
+                        {theResult?.title ?? ""}
+                      </p>
+                    </div>
+                    <div className="flex gap-x-2 items-center">
+                      <div className="bg-black p-[5px] rounded-full">
+                        <IoMdPerson color="white" size="28px" />
+                      </div>
+                      <p className="underline">
+                        {theResult?.seller?.slice(0, 7) + "..."}
+                      </p>
+                    </div>
+                    <div className="flex gap-x-1 items-center">
+                      <FaStar />
+                      <p>0 ({theResult?.comments?.length ?? 0})</p>
+                    </div>
+                  </div>
+                  <div className="px-[1rem] py-[0.5rem] mt-2 flex justify-start w-full">
+                    <div className="price-container">
+                      <div className="product-price">
+                        <p>
+                          {theResult?.price?.toString()} {theResult?.currency}
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
+              ))
+            ) : (
+              <div className="h-full mb-auto flex justify-center items-center flex-col">
+                <Image
+                  src="/self-improvement.svg"
+                  width={450}
+                  height={100}
+                  alt="walao"
+                />
+                <p className="text-black font-bold text-[22px]">
+                  This product type is currently empty...
+                </p>
               </div>
-            </div>
+            )}
           </div>
         </div>
         <div className="h-[1px] w-full bg-[#646564]" />
-        <footer className="bg-black py-[25px] lg:flex-row flex-col flex gap-5 justify-center items-center">
+        <footer className="bg-black py-[25px] mt-auto lg:flex-row flex-col flex gap-5 justify-center items-center">
           <p className="text-center text-[18px] lg:text-[24px] text-white">
             With Gumroad, anyone can earn their first dollar online.
           </p>

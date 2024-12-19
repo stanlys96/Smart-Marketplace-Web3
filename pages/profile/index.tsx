@@ -248,9 +248,6 @@ export default function Profile() {
               </div>
             </div>
           </div>
-          <p className="text-black text-[24px] mt-[24px] font-semibold">
-            Best selling
-          </p>
         </div>
       </div>
     </div>

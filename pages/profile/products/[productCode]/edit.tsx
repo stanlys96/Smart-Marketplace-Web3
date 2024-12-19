@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { useRouter } from "next/router";
 import { FaHome } from "react-icons/fa";
 import { MdShoppingBag } from "react-icons/md";
@@ -6,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import {
   config,
+  getPinataUrl,
   marketplaceAddress,
   NFTAddress,
   tokenAddress,
@@ -27,9 +27,16 @@ import { waitForTransactionReceipt } from "@wagmi/core";
 import { BsPersonFill } from "react-icons/bs";
 import Swal from "sweetalert2";
 
+const calculateDPI = (file: any) => {
+  if (file?.type === "image/jpeg" || file?.type === "image/png") {
+    return 72;
+  }
+  return 72;
+};
+
 export default function Edit() {
   const fileInputRef = useRef(null);
-
+  const { address } = useAccount();
   const router = useRouter();
   const { productCode } = router.query;
   const { newProduct } = useSelector((state: any) => state.user);
@@ -40,20 +47,28 @@ export default function Edit() {
   const [productUrl, setProductUrl] = useState("");
   const [productInfo, setProductInfo] = useState("");
   const [price, setPrice] = useState(newProduct?.price);
+  const [currency, setCurrency] = useState(newProduct?.currency);
   const [fileImage, setFileImage] = useState<any>();
   const [previewUrl, setPreviewUrl] = useState<any>();
   const [loading, setLoading] = useState(false);
+  const [imageChanged, setImageChanged] = useState(false);
   const { data: hash, writeContractAsync } = useWriteContract();
   const mintNFTResult = useTransactionReceipt({
     hash: hash,
   });
-  const result = useReadContract({
+  const productCodeExists = useReadContract({
     abi: MetaverseMarketplaceABI,
     address: process.env.NEXT_PUBLIC_MARKETPLACE_ADDRESS as any,
     functionName: "productCodeExists",
     args: [productCode],
   });
-  const [productExists, setProductExists] = useState(result?.data);
+  const listingResult = useReadContract({
+    abi: MetaverseMarketplaceABI,
+    address: process.env.NEXT_PUBLIC_MARKETPLACE_ADDRESS as any,
+    functionName: "getListingByProductCode",
+    account: address,
+    args: [productCode],
+  });
   const createTokenURI = async (
     name: string,
     description: string,
@@ -72,10 +87,30 @@ export default function Edit() {
       return { tokenURI, imageUrl: imageIPFSHash };
     } catch (error) {
       console.error("Error creating Token URI:", error);
-      throw new Error("Error creating Token URI");
+      return { tokenURI: "", imageUrl: "" };
     }
   };
-
+  useEffect(() => {
+    listingResult
+      .refetch()
+      .then((theResult) => {
+        console.log(theResult, "<< ??");
+        if ((theResult?.data as any).title) {
+          const finalResult = theResult?.data as any;
+          setProductName(finalResult?.title);
+          setDescription(finalResult?.description);
+          if (finalResult?.imageUrl) {
+            setPreviewUrl(getPinataUrl(finalResult?.imageUrl));
+          }
+          setProductInfo(finalResult?.productInfo);
+          setPrice(finalResult?.price?.toString());
+          setCurrency(finalResult?.currency);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
   return (
     <div className="flex h-[100vh]">
       {loading && (
@@ -96,8 +131,11 @@ export default function Edit() {
         </div>
       )}
       <div className="w-[12.8125rem] static bg-black h-full">
-        <div className="flex justify-center items-center h-[9rem] border-b border-b-[#808080] px-[1.5rem]">
-          <Image
+        <div
+          onClick={() => router.push("/")}
+          className="flex cursor-pointer justify-center items-center h-[9rem] border-b border-b-[#808080] px-[1.5rem]"
+        >
+          <img
             className="flex-1 h-fit"
             src="/gumroad.svg"
             width={157}
@@ -142,13 +180,61 @@ export default function Edit() {
         <header className="py-[2rem] flex justify-between w-full flex-col h-[12.5rem] border-b border-b-[#808080] px-[3rem]">
           <div className="flex justify-between w-full items-center">
             <p className="text-black my-[1rem] text-[2.5rem]">
-              {newProduct?.name}
+              {productCodeExists?.data
+                ? (listingResult?.data as any)?.title
+                : newProduct?.name}
             </p>
             <div className="flex gap-x-3 items-center">
+              {productCodeExists?.data ? (
+                <button
+                  onClick={async () => {
+                    try {
+                      setLoading(true);
+                      const secondResponse = await writeContractAsync({
+                        address: marketplaceAddress ?? "",
+                        abi: MetaverseMarketplaceABI,
+                        functionName: "changeListingVisibility",
+                        args: [
+                          (listingResult?.data as any)?.productCode,
+                          !(listingResult?.data as any)?.published,
+                        ],
+                      });
+                      const transactionReceipt =
+                        await waitForTransactionReceipt(config, {
+                          hash: secondResponse,
+                          confirmations: 2,
+                        });
+                      if (transactionReceipt?.status === "success") {
+                        notification.success({
+                          message: "Success!",
+                          description:
+                            "You have successfully updated a product!",
+                          placement: "topRight",
+                        });
+                        listingResult?.refetch();
+                      }
+                      setLoading(false);
+                    } catch (e) {
+                      setLoading(false);
+                    }
+                  }}
+                  disabled={loading}
+                  className="border hover:bg-[#ff90e8] bg-black hover:text-black text-white button border-[#4D4D4D] h-full px-[1rem] py-[0.75rem] rounded-[0.25rem] cursor-pointer text-black"
+                >
+                  {(listingResult?.data as any)?.published
+                    ? "Unpublish"
+                    : "Publish"}
+                </button>
+              ) : null}
               <button
                 disabled={loading}
                 onClick={async () => {
-                  if (!productName || !description || !productInfo || !price) {
+                  if (
+                    !productName?.trim() ||
+                    !description?.trim() ||
+                    !productInfo?.trim() ||
+                    !price
+                  ) {
                     return Swal.fire(
                       "Field Not Filled",
                       "Please fill the necessary input fields!",
@@ -157,45 +243,74 @@ export default function Edit() {
                   }
                   try {
                     setLoading(true);
-                    const result = await createTokenURI(
-                      productName,
-                      description,
-                      fileImage ?? ""
-                    );
-                    const firstResponse = await writeContractAsync({
-                      address: NFTAddress ?? "",
-                      abi: MetaverseNFTABI,
-                      functionName: "mintNFT",
-                      args: [result?.tokenURI],
-                    });
-                    const secondResponse = await writeContractAsync({
-                      address: marketplaceAddress ?? "",
-                      abi: MetaverseMarketplaceABI,
-                      functionName: "listItem",
-                      args: [
-                        price,
-                        newProduct?.type,
+                    let result;
+                    let firstResponse;
+                    if (imageChanged) {
+                      result = await createTokenURI(
                         productName,
                         description,
-                        result?.imageUrl,
-                        newProduct?.currency,
-                        productUrl ? productUrl : productCode,
-                        productInfo,
-                        productCode,
-                        1,
-                      ],
-                    });
+                        fileImage ?? ""
+                      );
+                      if (!productCodeExists?.data) {
+                        firstResponse = await writeContractAsync({
+                          address: NFTAddress ?? "",
+                          abi: MetaverseNFTABI,
+                          functionName: "mintNFT",
+                          args: [result?.tokenURI],
+                        });
+                      }
+                    }
+                    let response;
+                    if (productCodeExists?.data) {
+                      response = await writeContractAsync({
+                        address: marketplaceAddress ?? "",
+                        abi: MetaverseMarketplaceABI,
+                        functionName: "updateListing",
+                        args: [
+                          productCode,
+                          price,
+                          productName,
+                          description,
+                          productInfo,
+                          productUrl ? productUrl : productCode,
+                          !imageChanged
+                            ? (listingResult?.data as any)?.imageUrl
+                            : result?.imageUrl ?? "",
+                        ],
+                      });
+                    } else {
+                      response = await writeContractAsync({
+                        address: marketplaceAddress ?? "",
+                        abi: MetaverseMarketplaceABI,
+                        functionName: "listItem",
+                        args: [
+                          price,
+                          newProduct?.type,
+                          productName,
+                          description,
+                          result?.imageUrl ?? "",
+                          newProduct?.currency,
+                          productUrl ? productUrl : productCode,
+                          productInfo,
+                          productCode,
+                          1,
+                        ],
+                      });
+                    }
+
                     const transactionReceipt = await waitForTransactionReceipt(
                       config,
                       {
-                        hash: secondResponse,
+                        hash: response as any,
                         confirmations: 2,
                       }
                     );
                     if (transactionReceipt?.status === "success") {
                       notification.success({
                         message: "Success!",
-                        description: "You have successfully created a product!",
+                        description: `You have successfully ${
+                          productCodeExists?.data ? "edited" : "created"
+                        } a product!`,
                         placement: "topRight",
                       });
                       router.push("/profile/products");
@@ -208,7 +323,9 @@ export default function Edit() {
                 }}
                 className="border hover:bg-[#ff90e8] bg-black hover:text-black text-white button border-[#4D4D4D] h-full px-[1rem] py-[0.75rem] rounded-[0.25rem] cursor-pointer text-black"
               >
-                Save and continue
+                {productCodeExists?.data
+                  ? "Update product"
+                  : "Save and continue"}
               </button>
             </div>
           </div>
@@ -243,7 +360,9 @@ export default function Edit() {
             <div className="mt-[20px]">
               <p>URL</p>
               <div className="input-price-product border mt-[10px] flex gap-x-2 items-center">
-                <p className="username-p w-fit">stanlys96.gumroad.com/l/</p>
+                <p className="username-p w-fit">
+                  {process.env.NEXT_PUBLIC_FRONTEND_URL}/product-self/
+                </p>
                 <input
                   disabled
                   value={productCode}
@@ -268,23 +387,60 @@ export default function Edit() {
                 ref={fileInputRef}
                 onChange={(e) => {
                   const file = e?.target?.files?.[0];
-                  if (file) {
-                    setFileImage(file);
-                    const reader = new FileReader();
-                    reader.onload = () => {
-                      setPreviewUrl(reader.result);
-                    };
-                    reader.readAsDataURL(file);
-                  }
+                  if (!file) return;
+                  const image = new Image();
+                  const reader = new FileReader();
+
+                  reader.onload = (e) => {
+                    (image.src as any) = e?.target?.result;
+                  };
+                  image.onload = () => {
+                    const { width, height } = image;
+                    if (width <= height) {
+                      return Swal.fire(
+                        "Error!",
+                        "Image must be horizontal.",
+                        "error"
+                      );
+                    }
+                    if (width < 1280 || height < 720) {
+                      return Swal.fire(
+                        "Error!",
+                        "Image must be at least 1280x720 pixels.",
+                        "error"
+                      );
+                    }
+                    const dpi = calculateDPI(file);
+                    if (dpi < 72) {
+                      return Swal.fire(
+                        "Error!",
+                        "Image DPI must be at least 72.",
+                        "error"
+                      );
+                    }
+                  };
+                  setFileImage(file);
+                  reader.onload = () => {
+                    setPreviewUrl(reader.result);
+                  };
+                  reader.readAsDataURL(file);
+                  setImageChanged(true);
                 }}
               />
-              {fileImage ? (
-                <Image
-                  src={previewUrl}
-                  width={400}
-                  height={400}
-                  alt="FileImage"
-                />
+              {previewUrl ? (
+                <a
+                  className="cursor-pointer"
+                  onClick={() => {
+                    (fileInputRef?.current as any)?.click();
+                  }}
+                >
+                  <img
+                    src={previewUrl}
+                    width={400}
+                    height={400}
+                    alt="FileImage"
+                  />
+                </a>
               ) : (
                 <div className="flex flex-col gap-y-3 items-center justify-center">
                   <button
@@ -319,7 +475,7 @@ export default function Edit() {
             <div className="mt-[20px]">
               <p>Price</p>
               <div className="input-price-product border mt-[10px] flex gap-x-2 items-center">
-                <p className="username-p">{newProduct?.currency}</p>
+                <p className="username-p">{currency}</p>
                 <input
                   value={price}
                   onChange={(e) => {

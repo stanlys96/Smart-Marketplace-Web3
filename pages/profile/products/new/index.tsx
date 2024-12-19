@@ -75,7 +75,10 @@ export default function Profile() {
   return (
     <div className="flex h-[100vh]">
       <div className="w-[12.8125rem] static bg-black h-full">
-        <div className="flex justify-center items-center h-[9rem] border-b border-b-[#808080] px-[1.5rem]">
+        <div
+          onClick={() => router.push("/")}
+          className="flex cursor-pointer justify-center items-center h-[9rem] border-b border-b-[#808080] px-[1.5rem]"
+        >
           <Image
             className="flex-1 h-fit"
             src="/gumroad.svg"
