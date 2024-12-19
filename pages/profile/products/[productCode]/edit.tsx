@@ -10,16 +10,11 @@ import {
   NFTAddress,
   uploadImageToIPFS,
   uploadMetadataToIPFS,
-} from "@/src/helper/helper";
+} from "../../../../src/helper/helper";
 import { FidgetSpinner } from "react-loader-spinner";
 import MetaverseMarketplaceABI from "../../../../src/helper/MetaverseMarketplaceABI.json";
 import MetaverseNFTABI from "../../../../src/helper/MetaverseNFTABI.json";
-import {
-  useWriteContract,
-  useReadContract,
-  useTransactionReceipt,
-  useAccount,
-} from "wagmi";
+import { useWriteContract, useReadContract, useAccount } from "wagmi";
 import { notification } from "antd";
 import { waitForTransactionReceipt } from "@wagmi/core";
 import { BsPersonFill } from "react-icons/bs";

@@ -9,7 +9,7 @@ import {
   config,
   formatCurrencyString,
   marketplaceAddress,
-} from "@/src/helper/helper";
+} from "../../src/helper/helper";
 import MetaverseMarketplaceABI from "../../src/helper/MetaverseMarketplaceABI.json";
 import { FidgetSpinner } from "react-loader-spinner";
 import { getBalance, waitForTransactionReceipt } from "wagmi/actions";

@@ -5,7 +5,7 @@ import { web3Modal } from "../_app";
 import { useRouter } from "next/router";
 import { FaStar } from "react-icons/fa";
 import MetaverseMarketplaceABI from "../../src/helper/MetaverseMarketplaceABI.json";
-import { getPinataUrl } from "@/src/helper/helper";
+import { getPinataUrl } from "../../src/helper/helper";
 import { IoMdPerson } from "react-icons/io";
 import { ethers } from "ethers";
 

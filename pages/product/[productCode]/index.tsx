@@ -10,7 +10,11 @@ import { web3Modal } from "../../_app";
 import { useRouter } from "next/router";
 import { FaStar, FaInfoCircle, FaRegStar } from "react-icons/fa";
 import MetaverseMarketplaceABI from "../../../src/helper/MetaverseMarketplaceABI.json";
-import { config, getPinataUrl, marketplaceAddress } from "@/src/helper/helper";
+import {
+  config,
+  getPinataUrl,
+  marketplaceAddress,
+} from "../../../src/helper/helper";
 import { IoMdPerson } from "react-icons/io";
 import { waitForTransactionReceipt } from "wagmi/actions";
 import { notification } from "antd";

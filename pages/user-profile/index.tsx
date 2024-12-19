@@ -8,7 +8,7 @@ import {
   config,
   marketplaceAddress,
   uploadImageToIPFS,
-} from "@/src/helper/helper";
+} from "../../src/helper/helper";
 import MetaverseMarketplaceABI from "../../src/helper/MetaverseMarketplaceABI.json";
 import { FidgetSpinner } from "react-loader-spinner";
 import { waitForTransactionReceipt } from "wagmi/actions";

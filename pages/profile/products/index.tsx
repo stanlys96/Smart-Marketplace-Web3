@@ -13,7 +13,7 @@ import {
   filterResult,
   formatCurrencyString,
   marketplaceAddress,
-} from "@/src/helper/helper";
+} from "../../../src/helper/helper";
 import { waitForTransactionReceipt } from "wagmi/actions";
 import { FidgetSpinner } from "react-loader-spinner";
 import { ethers } from "ethers";

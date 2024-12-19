@@ -7,7 +7,7 @@ import { LuCircleX } from "react-icons/lu";
 import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
 import { setNewProduct } from "@/stores/user-slice";
-import { generateRandomString } from "@/src/helper/helper";
+import { generateRandomString } from "../../../../src/helper/helper";
 import { BsPersonFill } from "react-icons/bs";
 import CurrencyInput from "react-currency-input-field";
 
