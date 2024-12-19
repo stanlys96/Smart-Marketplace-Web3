@@ -8,14 +8,12 @@ import {
   getPinataUrl,
   marketplaceAddress,
   NFTAddress,
-  tokenAddress,
   uploadImageToIPFS,
   uploadMetadataToIPFS,
 } from "@/src/helper/helper";
 import { FidgetSpinner } from "react-loader-spinner";
 import MetaverseMarketplaceABI from "../../../../src/helper/MetaverseMarketplaceABI.json";
 import MetaverseNFTABI from "../../../../src/helper/MetaverseNFTABI.json";
-import MetaverseTokenABI from "../../../../src/helper/MetaverseTokenABI.json";
 import {
   useWriteContract,
   useReadContract,
@@ -55,9 +53,6 @@ export default function Edit() {
   const [loading, setLoading] = useState(false);
   const [imageChanged, setImageChanged] = useState(false);
   const { data: hash, writeContractAsync } = useWriteContract();
-  const mintNFTResult = useTransactionReceipt({
-    hash: hash,
-  });
   const productCodeExists = useReadContract({
     abi: MetaverseMarketplaceABI,
     address: process.env.NEXT_PUBLIC_MARKETPLACE_ADDRESS as any,
@@ -96,7 +91,6 @@ export default function Edit() {
     listingResult
       .refetch()
       .then((theResult) => {
-        console.log(theResult, "<< ??");
         if ((theResult?.data as any).title) {
           const finalResult = theResult?.data as any;
           setProductName(finalResult?.title);

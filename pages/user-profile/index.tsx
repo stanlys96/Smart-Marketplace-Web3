@@ -2,32 +2,18 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { FaHome } from "react-icons/fa";
 import { MdShoppingBag } from "react-icons/md";
-import { IoMdInformationCircleOutline, IoMdPerson } from "react-icons/io";
 import { useEffect, useRef, useState } from "react";
-import {
-  useReadContract,
-  useBalance,
-  useAccount,
-  useWriteContract,
-} from "wagmi";
+import { useReadContract, useAccount, useWriteContract } from "wagmi";
 import {
   config,
   marketplaceAddress,
   uploadImageToIPFS,
 } from "@/src/helper/helper";
 import MetaverseMarketplaceABI from "../../src/helper/MetaverseMarketplaceABI.json";
-import MetaverseNFTABI from "../../src/helper/MetaverseNFTABI.json";
-import MetaverseTokenABI from "../../src/helper/MetaverseTokenABI.json";
 import { FidgetSpinner } from "react-loader-spinner";
-import { getBalance, waitForTransactionReceipt } from "wagmi/actions";
+import { waitForTransactionReceipt } from "wagmi/actions";
 import { BsPersonFill } from "react-icons/bs";
 import { notification } from "antd";
-
-const urlToFile = async (url: any, filename: any, mimeType: any) => {
-  const response = await fetch(url);
-  const blob = await response.blob();
-  return new File([blob], filename, { type: mimeType });
-};
 
 export default function Profile() {
   const fileInputRef = useRef(null);
@@ -36,28 +22,11 @@ export default function Profile() {
   const [hovered2, setHovered2] = useState(false);
   const [loading, setLoading] = useState(false);
   const { address } = useAccount();
-  const { data: hash, writeContractAsync } = useWriteContract();
-  const [currentETHBalance, setCurrentETHBalance] = useState("");
-  const [currentMETTBalance, setCurrentMETTBalance] = useState("");
-  const [currentLSKBalance, setCurrentLSKBalance] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { writeContractAsync } = useWriteContract();
   const [domLoaded, setDomLoaded] = useState(false);
   const [fileImage, setFileImage] = useState<any>();
   const [previewUrl, setPreviewUrl] = useState<any>();
-  const [imageUrl, setImageUrl] = useState<any>();
   const [imageChanged, setImageChanged] = useState<any>();
-
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
   const result = useReadContract({
     abi: MetaverseMarketplaceABI,
     address: process.env.NEXT_PUBLIC_MARKETPLACE_ADDRESS as any,
@@ -65,47 +34,9 @@ export default function Profile() {
     args: [address],
   });
   const [username, setUsername] = useState("");
-  const theBalance = getBalance(config, {
-    address: address ?? "0x0000000000000000000000000000000000000000",
-  });
-  const mettBalance = getBalance(config, {
-    address: address ?? "0x0000000000000000000000000000000000000000",
-    token:
-      (process.env.NEXT_PUBLIC_METAVERSE_TOKEN_ADDRESS as any) ??
-      "0x0000000000000000000000000000000000000000",
-  });
-  const lskBalance = getBalance(config, {
-    address: address ?? "0x0000000000000000000000000000000000000000",
-    token: "0x8a21CF9Ba08Ae709D64Cb25AfAA951183EC9FF6D",
-  });
-
-  useEffect(() => {
-    theBalance
-      ?.then((result) => {
-        setCurrentETHBalance(result?.formatted);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    mettBalance
-      ?.then((result) => {
-        setCurrentMETTBalance(result?.formatted);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    lskBalance
-      ?.then((result) => {
-        setCurrentLSKBalance(result?.formatted);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
   useEffect(() => {
     setDomLoaded(true);
     result.refetch().then((theResult) => {
-      console.log(theResult);
       setUsername((theResult?.data as any)?.username);
       setPreviewUrl((theResult?.data as any)?.profileImageUrl);
     });

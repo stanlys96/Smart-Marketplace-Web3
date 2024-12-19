@@ -1,15 +1,14 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { useConnect, useAccount, useDisconnect } from "wagmi";
+import { useAccount, useDisconnect } from "wagmi";
 import { web3Modal } from "./_app";
 import { useRouter } from "next/router";
 
 export default function Home() {
   const router = useRouter();
-  const { connect } = useConnect();
   const { disconnect } = useDisconnect();
   const account = useAccount();
-  const [currentCategory, setCurrentCategory] = useState<string>("All");
+  const [currentCategory] = useState<string>("All");
   const [isHovering, setIsHovering] = useState<boolean>(false);
   const [domLoaded, setDomLoaded] = useState<boolean>(false);
   const categories = [

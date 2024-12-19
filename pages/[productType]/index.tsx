@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { useConnect, useAccount, useDisconnect, useReadContract } from "wagmi";
+import { useAccount, useDisconnect, useReadContract } from "wagmi";
 import { web3Modal } from "../_app";
 import { useRouter } from "next/router";
 import { FaStar } from "react-icons/fa";
@@ -11,7 +11,6 @@ import { ethers } from "ethers";
 
 export default function Home() {
   const router = useRouter();
-  const { connect } = useConnect();
   const { disconnect } = useDisconnect();
   const { productType } = router.query;
   const account = useAccount();

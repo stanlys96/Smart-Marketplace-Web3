@@ -2,14 +2,11 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { FaHome } from "react-icons/fa";
 import { MdShoppingBag } from "react-icons/md";
-import { IoMdInformationCircleOutline } from "react-icons/io";
 import { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { BsPersonFill, BsThreeDots } from "react-icons/bs";
 import { useReadContract, useAccount, useWriteContract } from "wagmi";
 import MetaverseMarketplaceABI from "../../../src/helper/MetaverseMarketplaceABI.json";
-import MetaverseNFTABI from "../../../src/helper/MetaverseNFTABI.json";
-import MetaverseTokenABI from "../../../src/helper/MetaverseTokenABI.json";
 import { notification, Popover } from "antd";
 import {
   config,
@@ -19,8 +16,6 @@ import {
 } from "@/src/helper/helper";
 import { waitForTransactionReceipt } from "wagmi/actions";
 import { FidgetSpinner } from "react-loader-spinner";
-import { useDispatch } from "react-redux";
-import { setClickedProduct } from "@/stores/user-slice";
 import { ethers } from "ethers";
 
 export default function Profile() {
@@ -28,18 +23,9 @@ export default function Profile() {
   const router = useRouter();
   const [hovered, setHovered] = useState(false);
   const [hovered2, setHovered2] = useState(false);
-  const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { data: hash, writeContractAsync } = useWriteContract();
+  const { writeContractAsync } = useWriteContract();
   const [theDataPopOver, setTheDataPopOver] = useState<any>([]);
-  const dispatch = useDispatch();
-  const hide = () => {
-    setOpen(false);
-  };
-
-  const handleOpenChange = (newOpen: boolean) => {
-    setOpen(newOpen);
-  };
 
   const result = useReadContract({
     abi: MetaverseMarketplaceABI,

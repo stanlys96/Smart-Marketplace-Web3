@@ -23,7 +23,7 @@ export default function Home() {
   const account = useAccount();
   const { productCode } = router.query;
   const [domLoaded, setDomLoaded] = useState<boolean>(false);
-  const { data: hash, writeContractAsync } = useWriteContract();
+  const { writeContractAsync } = useWriteContract();
   const [loading, setLoading] = useState(false);
   const result = useReadContract({
     abi: MetaverseMarketplaceABI,
