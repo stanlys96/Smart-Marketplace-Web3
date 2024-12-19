@@ -29,9 +29,12 @@
     "wagmi": "^2.12.8"
   },
   "devDependencies": {
+    "@babel/core": "^7.26.0",
+    "@babel/preset-env": "^7.26.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "babel-loader": "^9.2.1",
     "eslint": "^8",
     "eslint-config-next": "14.2.7",
     "postcss": "^8",
