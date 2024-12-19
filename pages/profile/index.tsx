@@ -22,6 +22,7 @@ import { FidgetSpinner } from "react-loader-spinner";
 import { getBalance, waitForTransactionReceipt } from "wagmi/actions";
 import { BsPersonFill } from "react-icons/bs";
 import { notification } from "antd";
+import { ethers } from "ethers";
 
 export default function Profile() {
   const fileInputRef = useRef(null);
@@ -56,6 +57,14 @@ export default function Profile() {
     functionName: "getUserProfile",
     account: address,
   });
+  const proceedsResult = useReadContract({
+    abi: MetaverseMarketplaceABI,
+    address: process.env.NEXT_PUBLIC_MARKETPLACE_ADDRESS as any,
+    functionName: "getProceeds",
+    account: address,
+    args: [address, "ETH"],
+  });
+
   const [username, setUsername] = useState("");
   const theBalance = getBalance(config, {
     address: address ?? "0x0000000000000000000000000000000000000000",
@@ -206,7 +215,7 @@ export default function Profile() {
         <div className="p-[64px] overflow-y-auto">
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-[1rem]">
             <div className="p-[1.5rem] flex flex-col justify-between text-[1.5rem] border border-black rounded-[0.25rem] bg-white">
-              <div className="flex gap-x-2 items-center">
+              <div className="flex gap-x-2 items-center mb-[10px]">
                 <p className="text-black text-[16px]">Balance</p>
                 <IoMdInformationCircleOutline size="22px" />
               </div>
@@ -221,7 +230,6 @@ export default function Profile() {
                 <IoMdInformationCircleOutline size="22px" />
               </div>
               <p className="font-bold">0 ETH</p>
-              <p className="font-bold">0 METT</p>
             </div>
             <div className="p-[1.5rem] flex flex-col justify-between text-[1.5rem] border border-black rounded-[0.25rem] bg-white">
               <div className="flex gap-x-2 items-center">
@@ -229,21 +237,47 @@ export default function Profile() {
                 <IoMdInformationCircleOutline size="22px" />
               </div>
               <div className="flex justify-between items-center">
-                <p className="font-bold">0 ETH</p>
+                <p className="font-bold">
+                  {ethers?.formatUnits(
+                    proceedsResult?.data?.toString() ?? "0",
+                    "ether"
+                  )}{" "}
+                  ETH
+                </p>
                 <button
-                  onClick={() => router.push("/profile/products/new")}
+                  disabled={loading}
+                  onClick={async () => {
+                    setLoading(true);
+                    try {
+                      const secondResponse = await writeContractAsync({
+                        address: marketplaceAddress ?? "",
+                        abi: MetaverseMarketplaceABI,
+                        functionName: "withdrawProceeds",
+                        args: ["ETH"],
+                      });
+                      const transactionReceipt =
+                        await waitForTransactionReceipt(config, {
+                          hash: secondResponse,
+                          confirmations: 4,
+                        });
+                      if (transactionReceipt?.status === "success") {
+                        notification.success({
+                          message: "Success!",
+                          description:
+                            "You have successfully withdrawn all your ETH proceeds!",
+                          placement: "topRight",
+                        });
+                        proceedsResult?.refetch();
+                      }
+                      setLoading(false);
+                    } catch (e) {
+                      setLoading(false);
+                      console.log(e);
+                    }
+                  }}
                   className="border button text-[14px] bg-[#ff90e8] text-[#DDDDDD] border-[#4D4D4D] px-[1rem] py-[0.75rem] rounded-[0.25rem] cursor-pointer text-black"
                 >
-                  Withdraw ETH
-                </button>
-              </div>
-              <div className="flex justify-between items-center mt-[10px]">
-                <p className="font-bold">0 METT</p>
-                <button
-                  onClick={() => router.push("/profile/products/new")}
-                  className="border button text-[14px] bg-[#ff90e8] text-[#DDDDDD] border-[#4D4D4D] px-[1rem] py-[0.75rem] rounded-[0.25rem] cursor-pointer text-black"
-                >
-                  Withdraw METT
+                  Withdraw
                 </button>
               </div>
             </div>

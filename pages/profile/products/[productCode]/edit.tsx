@@ -26,6 +26,8 @@ import { notification } from "antd";
 import { waitForTransactionReceipt } from "@wagmi/core";
 import { BsPersonFill } from "react-icons/bs";
 import Swal from "sweetalert2";
+import CurrencyInput from "react-currency-input-field";
+import { ethers } from "ethers";
 
 const calculateDPI = (file: any) => {
   if (file?.type === "image/jpeg" || file?.type === "image/png") {
@@ -103,7 +105,9 @@ export default function Edit() {
             setPreviewUrl(getPinataUrl(finalResult?.imageUrl));
           }
           setProductInfo(finalResult?.productInfo);
-          setPrice(finalResult?.price?.toString());
+          setPrice(
+            ethers.formatUnits(finalResult?.price?.toString() ?? "0", "ether")
+          );
           setCurrency(finalResult?.currency);
         }
       })
@@ -111,6 +115,7 @@ export default function Edit() {
         console.log(err);
       });
   }, []);
+
   return (
     <div className="flex h-[100vh]">
       {loading && (
@@ -268,7 +273,7 @@ export default function Edit() {
                         functionName: "updateListing",
                         args: [
                           productCode,
-                          price,
+                          ethers.parseUnits(price?.toString(), "ether"),
                           productName,
                           description,
                           productInfo,
@@ -284,7 +289,7 @@ export default function Edit() {
                         abi: MetaverseMarketplaceABI,
                         functionName: "listItem",
                         args: [
-                          price,
+                          ethers.parseUnits(price?.toString(), "ether"),
                           newProduct?.type,
                           productName,
                           description,
@@ -352,7 +357,9 @@ export default function Edit() {
               <textarea
                 rows={5}
                 value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                onChange={(e) => {
+                  setDescription(e.target.value);
+                }}
                 className="mt-[10px] input-name-product"
                 placeholder="Product description"
               />
@@ -476,18 +483,29 @@ export default function Edit() {
               <p>Price</p>
               <div className="input-price-product border mt-[10px] flex gap-x-2 items-center">
                 <p className="username-p">{currency}</p>
-                <input
+                <CurrencyInput
+                  id="input-example"
+                  name="input-name"
+                  placeholder="Price your product"
                   value={price}
-                  onChange={(e) => {
-                    let inputValue = e.target.value.replace(/[^0-9]/g, "");
-                    if (inputValue.startsWith("0")) {
-                      inputValue = inputValue.slice(1);
+                  defaultValue={0}
+                  decimalsLimit={6}
+                  onFocus={undefined}
+                  onKeyUp={undefined}
+                  onSubmit={undefined}
+                  onSubmitCapture={undefined}
+                  onChangeCapture={undefined}
+                  transformRawValue={(value: any) => {
+                    if (value[value.length - 1] === ",") {
+                      return value + ".";
                     }
-                    setPrice(inputValue);
+                    return value;
+                  }}
+                  onValueChange={(e: any) => {
+                    setPrice(e);
                   }}
                   type="text"
                   className="bg-transparent outline-none w-full"
-                  placeholder="Price your product"
                 />
               </div>
             </div>

@@ -21,6 +21,7 @@ import { waitForTransactionReceipt } from "wagmi/actions";
 import { FidgetSpinner } from "react-loader-spinner";
 import { useDispatch } from "react-redux";
 import { setClickedProduct } from "@/stores/user-slice";
+import { ethers } from "ethers";
 
 export default function Profile() {
   const { address } = useAccount();
@@ -172,14 +173,34 @@ export default function Profile() {
                         </div>
                       </td>
                       <td>
-                        <p>0</p>
-                      </td>
-                      <td>
-                        <p>$0</p>
+                        <p>{theData?.buyers?.length}</p>
                       </td>
                       <td>
                         <p>
-                          {formatCurrencyString(theData?.price?.toString())}{" "}
+                          {theData?.buyers?.reduce(
+                            (total: any, listing: any) => {
+                              const revenue =
+                                parseFloat(
+                                  ethers?.formatUnits(
+                                    listing?.totalPrice?.toString(),
+                                    "ether"
+                                  )
+                                ) * parseInt(listing?.quantity?.toString());
+                              return total + revenue;
+                            },
+                            0
+                          )}{" "}
+                          {"ETH"}
+                        </p>
+                      </td>
+                      <td>
+                        <p>
+                          {formatCurrencyString(
+                            ethers.formatUnits(
+                              theData?.price?.toString(),
+                              "ether"
+                            )
+                          )}{" "}
                           {theData?.currency}
                         </p>
                       </td>
@@ -278,9 +299,38 @@ export default function Profile() {
                   <td className="font-bold" colSpan={2}>
                     Totals
                   </td>
-                  <td className="font-bold">0</td>
+                  <td className="font-bold">
+                    {(result?.data as any).reduce(
+                      (total: any, listing: any) => {
+                        return total + (listing?.buyers?.length ?? 0);
+                      },
+                      0
+                    )}
+                  </td>
                   <td className="font-bold" colSpan={5}>
-                    $0
+                    {" "}
+                    {(result?.data as any).reduce(
+                      (total: any, listing: any) => {
+                        return (
+                          total +
+                          listing?.buyers?.reduce(
+                            (total: any, listing: any) => {
+                              const revenue =
+                                parseFloat(
+                                  ethers?.formatUnits(
+                                    listing?.totalPrice?.toString(),
+                                    "ether"
+                                  )
+                                ) * parseInt(listing?.quantity?.toString());
+                              return total + revenue;
+                            },
+                            0
+                          )
+                        );
+                      },
+                      0
+                    )}{" "}
+                    {"ETH"}
                   </td>
                 </tr>
               </tfoot>

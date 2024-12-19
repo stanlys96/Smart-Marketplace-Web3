@@ -7,6 +7,7 @@ import { FaStar } from "react-icons/fa";
 import MetaverseMarketplaceABI from "../../src/helper/MetaverseMarketplaceABI.json";
 import { getPinataUrl } from "@/src/helper/helper";
 import { IoMdPerson } from "react-icons/io";
+import { ethers } from "ethers";
 
 export default function Home() {
   const router = useRouter();
@@ -211,7 +212,11 @@ export default function Home() {
                     <div className="price-container">
                       <div className="product-price">
                         <p>
-                          {theResult?.price?.toString()} {theResult?.currency}
+                          {ethers.formatUnits(
+                            theResult?.price?.toString(),
+                            "ether"
+                          )}{" "}
+                          {theResult?.currency}
                         </p>
                       </div>
                     </div>

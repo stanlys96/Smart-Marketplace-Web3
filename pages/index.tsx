@@ -254,44 +254,6 @@ export default function Home() {
                 <div className="flex flex-col gap-y-2">
                   <p className="font-bold text-[24px]">{product?.title}</p>
                   <p>{product?.description}</p>
-                  <div className="flex items-start  gap-2 lg:flex-row flex-col lg:items-center">
-                    <div className="flex gap-x-2">
-                      <Image
-                        className="text-white"
-                        src="/person.svg"
-                        width={24}
-                        height={24}
-                        alt="walao"
-                      />
-                      <span className="text-[#6F6F6F]">
-                        {product?.attributes?.creators} creators
-                      </span>
-                    </div>
-                    <div className="flex gap-x-2">
-                      <Image
-                        className="text-white"
-                        src="/product.svg"
-                        width={24}
-                        height={24}
-                        alt="walao"
-                      />
-                      <span className="text-[#6F6F6F]">
-                        {product?.attributes?.products} products
-                      </span>
-                    </div>
-                    <div className="flex gap-x-2">
-                      <Image
-                        className="text-white"
-                        src="/money.svg"
-                        width={24}
-                        height={24}
-                        alt="walao"
-                      />
-                      <span className="text-[#6F6F6F]">
-                        {product?.attributes?.sales} sales
-                      </span>
-                    </div>
-                  </div>
                 </div>
               </div>
             ))}

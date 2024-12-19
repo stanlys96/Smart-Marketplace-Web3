@@ -9,6 +9,8 @@ import MetaverseMarketplaceABI from "../../../src/helper/MetaverseMarketplaceABI
 import MetaverseNFTABI from "../../../src/helper/MetaverseNFTABI.json";
 import MetaverseTokenABI from "../../../src/helper/MetaverseTokenABI.json";
 import { getPinataUrl } from "@/src/helper/helper";
+import { ethers } from "ethers";
+import Swal from "sweetalert2";
 
 export default function Home() {
   const router = useRouter();
@@ -34,7 +36,6 @@ export default function Home() {
     args: [address],
   });
   const currentData = result?.data as any;
-  console.log(currentData);
 
   useEffect(() => {
     setDomLoaded(true);
@@ -100,7 +101,10 @@ export default function Home() {
                       <div className="price-container">
                         <div className="product-price">
                           <p className="">
-                            {currentData?.price?.toString()}{" "}
+                            {ethers?.formatUnits(
+                              currentData?.price?.toString() ?? "0",
+                              "ether"
+                            )}{" "}
                             {currentData?.currency}
                           </p>
                         </div>
@@ -143,7 +147,10 @@ export default function Home() {
                       <p className="username-p text-black">ETH</p>
                       <input
                         disabled
-                        value={"100"}
+                        value={ethers?.formatUnits(
+                          currentData?.price?.toString() ?? "0",
+                          "ether"
+                        )}
                         onChange={(e) => {
                           let inputValue = e.target.value.replace(
                             /[^0-9]/g,
@@ -159,7 +166,15 @@ export default function Home() {
                       />
                     </div>
                     <button
-                      onClick={() => router.push("/profile/products/new")}
+                      onClick={() => {
+                        if (currentData?.seller === address) {
+                          return Swal.fire(
+                            "Your own product!",
+                            "Can't buy your own product!",
+                            "info"
+                          );
+                        }
+                      }}
                       className="border w-full mt-[20px] button bg-[#ff90e8] text-[#DDDDDD] border-[#000000] h-full px-[1rem] py-[0.75rem] rounded-[0.25rem] cursor-pointer text-black"
                     >
                       Buy product

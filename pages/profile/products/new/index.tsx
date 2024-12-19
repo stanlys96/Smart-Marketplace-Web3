@@ -9,6 +9,7 @@ import Swal from "sweetalert2";
 import { setNewProduct } from "@/stores/user-slice";
 import { generateRandomString } from "@/src/helper/helper";
 import { BsPersonFill } from "react-icons/bs";
+import CurrencyInput from "react-currency-input-field";
 
 export default function Profile() {
   const dispatch = useDispatch();
@@ -310,21 +311,30 @@ export default function Profile() {
                     className="currency-selector"
                   >
                     <option value="ETH">ETH</option>
-                    <option value="METT">METT</option>
                   </select>
-                  <input
+                  <CurrencyInput
+                    id="input-example"
+                    name="input-name"
+                    placeholder="Price your product"
                     value={price}
-                    onChange={(e) => {
-                      let inputValue = e.target.value.replace(/[^0-9]/g, "");
-                      if (inputValue.startsWith("0")) {
-                        inputValue = inputValue.slice(1);
+                    defaultValue={0}
+                    decimalsLimit={6}
+                    onFocus={undefined}
+                    onKeyUp={undefined}
+                    onSubmit={undefined}
+                    onSubmitCapture={undefined}
+                    onChangeCapture={undefined}
+                    transformRawValue={(value: any) => {
+                      if (value[value.length - 1] === ",") {
+                        return value + ".";
                       }
-
-                      setPrice(inputValue);
+                      return value;
+                    }}
+                    onValueChange={(e: any) => {
+                      setPrice(e);
                     }}
                     type="text"
                     className="bg-transparent outline-none w-full"
-                    placeholder="Price your product"
                   />
                 </div>
               </div>

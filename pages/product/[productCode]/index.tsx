@@ -140,7 +140,10 @@ export default function Home() {
                       <div className="price-container">
                         <div className="product-price-white white-border">
                           <p>
-                            {currentData?.price?.toString()}{" "}
+                            {ethers?.formatUnits(
+                              currentData?.price?.toString() ?? "0",
+                              "ether"
+                            )}{" "}
                             {currentData?.currency}
                           </p>
                         </div>
@@ -181,7 +184,10 @@ export default function Home() {
                       </p>
                       <input
                         disabled
-                        value={currentData?.price?.toString()}
+                        value={ethers?.formatUnits(
+                          currentData?.price?.toString() ?? "0",
+                          "ether"
+                        )}
                         onChange={(e) => {
                           let inputValue = e.target.value.replace(
                             /[^0-9]/g,
@@ -220,6 +226,7 @@ export default function Home() {
                                 "You have successfully bought the item!",
                               placement: "topRight",
                             });
+                            result?.refetch();
                           }
                           setLoading(false);
                         } catch (e) {
