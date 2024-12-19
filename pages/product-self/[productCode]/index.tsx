@@ -251,7 +251,7 @@ export default function Home() {
                           <FaStar color="black" size="16px" />
                         </div>
                         <p className="text-black">
-                          "{theResult?.comment ?? ""}"
+                          &quot;{theResult?.comment ?? ""}&quot;
                         </p>
                         <div className="flex gap-x-2 items-center border-b border-b-black pb-[20px]">
                           <Image

@@ -172,6 +172,7 @@ export default function Home() {
             {finalData?.length > 0 ? (
               finalData.map((theResult: any, index: number) => (
                 <div
+                  key={theResult?.productCode}
                   onClick={() =>
                     router.push(`/product/${theResult?.productCode}`)
                   }

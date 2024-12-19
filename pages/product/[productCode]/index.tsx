@@ -310,7 +310,9 @@ export default function Home() {
                             <FaStar color="white" size="16px" />
                             <FaStar color="white" size="16px" />
                           </div>
-                          <p className="text-white">"{theData?.comment}"</p>
+                          <p className="text-white">
+                            &quot;{theData?.comment}&quot;
+                          </p>
                           <div className="flex gap-x-2 items-center border-b border-b-white pb-[20px]">
                             <Image
                               width={20}
