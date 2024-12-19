@@ -1,5 +1,6 @@
 import { AppProps } from "next/app";
 import "../src/app/globals.css";
+import "../src/app/secondary.css";
 import { WagmiProvider } from "wagmi";
 // import { arbitrum, bsc, optimism, polygon, mainnet } from 'viem/chains'
 import {
