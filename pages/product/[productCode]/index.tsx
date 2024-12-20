@@ -12,14 +12,16 @@ import { FaStar, FaInfoCircle, FaRegStar } from "react-icons/fa";
 import MetaverseMarketplaceABI from "../../../src/helper/MetaverseMarketplaceABI.json";
 import {
   config,
+  getCurrentFormattedDateTime,
   getPinataUrl,
   marketplaceAddress,
 } from "../../../src/helper/helper";
 import { IoMdPerson } from "react-icons/io";
 import { waitForTransactionReceipt } from "wagmi/actions";
-import { notification } from "antd";
+import { notification, Modal } from "antd";
 import { FidgetSpinner } from "react-loader-spinner";
 import { ethers } from "ethers";
+import Swal from "sweetalert2";
 
 export default function Home() {
   const router = useRouter();
@@ -29,6 +31,31 @@ export default function Home() {
   const [domLoaded, setDomLoaded] = useState<boolean>(false);
   const { writeContractAsync } = useWriteContract();
   const [loading, setLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [rating, setRating] = useState(0);
+  const [hoverRating, setHoverRating] = useState(0);
+  const [comment, setComment] = useState("");
+  const [addCommentLoading, setAddCommentLoading] = useState(false);
+
+  const handleClick = (value: any) => {
+    if (addCommentLoading) return;
+    setRating(value);
+  };
+
+  const handleMouseEnter = (value: any) => {
+    setHoverRating(value);
+  };
+
+  const handleMouseLeave = () => {
+    setHoverRating(0);
+  };
+
+  const handleCancel = () => {
+    if (addCommentLoading) return;
+    setIsModalOpen(false);
+    setComment("");
+    setRating(0);
+  };
   const result = useReadContract({
     abi: MetaverseMarketplaceABI,
     address: process.env.NEXT_PUBLIC_MARKETPLACE_ADDRESS as any,
@@ -37,6 +64,45 @@ export default function Home() {
     args: [productCode],
   });
   const currentData = result?.data as any;
+
+  const handleOk = async () => {
+    try {
+      if (!comment || rating <= 0 || addCommentLoading) return;
+      setAddCommentLoading(true);
+      const currentDateString = getCurrentFormattedDateTime();
+      const secondResponse = await writeContractAsync({
+        address: marketplaceAddress ?? "",
+        abi: MetaverseMarketplaceABI,
+        functionName: "addComment",
+        args: [
+          comment,
+          rating,
+          currentDateString,
+          productCode,
+          currentData?.seller,
+        ],
+      });
+      const transactionReceipt = await waitForTransactionReceipt(config, {
+        hash: secondResponse,
+        confirmations: 2,
+      });
+      if (transactionReceipt?.status === "success") {
+        notification.success({
+          message: "Success!",
+          description: "You have successfully added your comment!",
+          placement: "topRight",
+        });
+        result?.refetch();
+      }
+      setAddCommentLoading(false);
+      setIsModalOpen(false);
+      setRating(0);
+      setComment("");
+    } catch (e) {
+      console.log(e, "<< ");
+      setAddCommentLoading(false);
+    }
+  };
 
   useEffect(() => {
     setDomLoaded(true);
@@ -251,6 +317,37 @@ export default function Home() {
                         buys
                       </p>
                     </div>
+                    <button
+                      onClick={() => {
+                        if (currentData?.seller === account?.address) {
+                          return Swal.fire(
+                            "Your own product!",
+                            "Can not comment on your own product!",
+                            "info"
+                          );
+                        }
+                        for (
+                          let i = 0;
+                          i < (currentData?.comments?.length ?? 0);
+                          i++
+                        ) {
+                          if (
+                            currentData?.comments?.[i]?.commenter ===
+                            account?.address
+                          ) {
+                            return Swal.fire(
+                              "You have commented on this product!",
+                              "You can only comment once per product!",
+                              "info"
+                            );
+                          }
+                        }
+                        setIsModalOpen(true);
+                      }}
+                      className="bg-[#F4F4F0] w-full mt-[15px] h-fit hover:bg-[#FF91E7] border border-[#4D4D4D] selling p-[1rem] rounded-[0.25rem] text-black"
+                    >
+                      Add rating
+                    </button>
                   </div>
                   <div className="p-[20px]">
                     <div className="flex justify-between">
@@ -301,7 +398,7 @@ export default function Home() {
                       </div>
                       <p className="text-white w-[35px]">0%</p>
                     </div>
-                    {(currentData?.ratings as any)?.map(
+                    {(currentData?.comments as any)?.map(
                       (theData: any, index: any) => (
                         <div
                           key={theData?.comment}
@@ -317,7 +414,13 @@ export default function Home() {
                           <p className="text-white">
                             &quot;{theData?.comment}&quot;
                           </p>
-                          <div className="flex gap-x-2 items-center border-b border-b-white pb-[20px]">
+                          <div
+                            className={`flex gap-x-2 items-center ${
+                              index !==
+                                (currentData?.comments as any)?.length - 1 &&
+                              "border-b border-b-white"
+                            }  pb-[20px]`}
+                          >
                             <Image
                               width={20}
                               height={20}
@@ -342,6 +445,57 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <Modal
+        title="Add your rating and comment"
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        confirmLoading={addCommentLoading}
+        onClose={handleCancel}
+      >
+        <div className="flex flex-col gap-y-3">
+          <div className="mt-[10px] flex justify-center">
+            {Array.from({ length: 5 }, (_, index) => {
+              const currentValue = index + 1;
+              return currentValue <= (hoverRating || rating) ? (
+                <div
+                  onMouseEnter={() => handleMouseEnter(currentValue)}
+                  onMouseLeave={handleMouseLeave}
+                  onClick={() => handleClick(currentValue)}
+                  className="px-1"
+                >
+                  <FaStar
+                    color="#5E648C"
+                    className="cursor-pointer"
+                    size="22px"
+                  />
+                </div>
+              ) : (
+                <div
+                  onMouseEnter={() => handleMouseEnter(currentValue)}
+                  onMouseLeave={handleMouseLeave}
+                  onClick={() => handleClick(currentValue)}
+                  className="px-1"
+                >
+                  <FaRegStar size="22px" className="cursor-pointer" />
+                </div>
+              );
+            })}
+          </div>
+          <div>
+            <input
+              className="input-username text-black w-full"
+              type="text"
+              value={comment}
+              onChange={(e) => {
+                if (addCommentLoading) return;
+                setComment(e.target.value);
+              }}
+              placeholder="Enter your comment"
+            />
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }

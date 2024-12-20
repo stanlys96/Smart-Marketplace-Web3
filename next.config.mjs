@@ -13,6 +13,7 @@ const nextConfig = {
     "rc-tooltip",
     "rc-tree",
     "rc-table",
+    "rc-input/es/utils/commonUtils",
   ],
 };
 
