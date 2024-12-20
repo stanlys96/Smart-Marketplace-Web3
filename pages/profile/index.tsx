@@ -137,7 +137,7 @@ export default function Profile() {
       <div className="w-full bg-[#F4F4F1]">
         <header className="py-[2rem] flex items-center justify-between h-[9rem] border-b border-b-[#808080] px-[3rem]">
           <p className="text-black my-[1rem] text-[2.5rem]">
-            Welcome to Gumroad.
+            Welcome to Smart Marketplace.
           </p>
           <button
             disabled={loading}
