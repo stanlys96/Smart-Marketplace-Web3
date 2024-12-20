@@ -40,8 +40,6 @@ export const uploadImageToIPFS = async (imageFile: any) => {
       {
         headers: {
           "Content-Type": "multipart/form-data",
-          pinata_api_key: process.env.NEXT_PUBLIC_PINATA_API_KEY,
-          pinata_secret_api_key: process.env.NEXT_PUBLIC_PINATA_API_SECRET,
         },
       }
     );
@@ -69,8 +67,6 @@ export const uploadMetadataToIPFS = async (
       {
         headers: {
           "Content-Type": "application/json",
-          pinata_api_key: process.env.NEXT_PUBLIC_PINATA_API_KEY,
-          pinata_secret_api_key: process.env.NEXT_PUBLIC_PINATA_API_SECRET,
         },
       }
     );
