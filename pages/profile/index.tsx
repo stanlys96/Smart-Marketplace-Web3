@@ -160,7 +160,8 @@ export default function Profile() {
                 if (transactionReceipt?.status === "success") {
                   notification.success({
                     message: "Success!",
-                    description: "You have successfully updated your profile!",
+                    description:
+                      "You have successfully received 1000 Metaverse Token!",
                     placement: "topRight",
                   });
                   mettBalance
