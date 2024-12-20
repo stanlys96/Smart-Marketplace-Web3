@@ -35,7 +35,7 @@ export const uploadImageToIPFS = async (imageFile: any) => {
     formData.append("file", imageFile);
 
     const response = await axios.post(
-      "https://api.pinata.cloud/pinning/pinFileToIPFS",
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/pinFileToIPFS`,
       formData,
       {
         headers: {
@@ -64,7 +64,7 @@ export const uploadMetadataToIPFS = async (
     };
 
     const response = await axios.post(
-      "https://api.pinata.cloud/pinning/pinJSONToIPFS",
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/pinJSONToIPFS`,
       metadata,
       {
         headers: {
