@@ -407,11 +407,17 @@ export default function Home() {
                           className="mt-[30px] flex flex-col gap-y-2"
                         >
                           <div className="flex gap-x-1">
-                            <FaStar color="white" size="16px" />
-                            <FaStar color="white" size="16px" />
-                            <FaStar color="white" size="16px" />
-                            <FaStar color="white" size="16px" />
-                            <FaStar color="white" size="16px" />
+                            {[...Array(5)].map((_, index) =>
+                              index < theData?.rating ? (
+                                <FaStar key={index} color="white" size="16px" />
+                              ) : (
+                                <FaRegStar
+                                  key={index}
+                                  color="white"
+                                  size="16px"
+                                />
+                              )
+                            )}
                           </div>
                           <p className="text-white">
                             &quot;{theData?.comment}&quot;
