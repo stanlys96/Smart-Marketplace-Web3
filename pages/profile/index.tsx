@@ -16,6 +16,7 @@ import { getBalance, waitForTransactionReceipt } from "wagmi/actions";
 import { BsPersonFill } from "react-icons/bs";
 import { notification } from "antd";
 import { ethers } from "ethers";
+import Swal from "sweetalert2";
 
 export default function Profile() {
   const router = useRouter();
@@ -171,9 +172,13 @@ export default function Profile() {
                     });
                 }
                 setLoading(false);
-              } catch (e) {
+              } catch (e: any) {
+                Swal.fire(
+                  "Airdrop Collected!",
+                  "You have collected your airdrop for the day, please wait for 24 hours after the time claimed.",
+                  "info"
+                );
                 setLoading(false);
-                console.log(e);
               }
             }}
             className="border button bg-[#ff90e8] text-[#DDDDDD] border-[#4D4D4D] h-fit px-[1rem] py-[0.75rem] rounded-[0.25rem] cursor-pointer text-black"
