@@ -8,13 +8,17 @@ export default function Home() {
   const router = useRouter();
   const { disconnect } = useDisconnect();
   const account = useAccount();
-  const [currentCategory] = useState<string>("All");
+  const [currentCategory] = useState<string>("Categories");
   const [isHovering, setIsHovering] = useState<boolean>(false);
   const [domLoaded, setDomLoaded] = useState<boolean>(false);
   const categories = [
     {
       id: 1,
-      title: "All",
+      title: "Categories",
+    },
+    {
+      id: 10,
+      title: "All products",
     },
     {
       id: 2,
@@ -211,7 +215,10 @@ export default function Home() {
           {categories.map((data) => (
             <div key={data?.id} className="popover">
               <button
-                onClick={() => router.push(`/${data?.title}`)}
+                onClick={() => {
+                  if (data?.title === currentCategory) return;
+                  router.push(`/${data?.title}`);
+                }}
                 role="menuitem"
                 key={data?.id}
                 aria-current={false}
@@ -264,7 +271,10 @@ export default function Home() {
             With Gumroad, anyone can earn their first dollar online.
           </p>
           {account?.address && (
-            <button className="bg-[#FF91E7] hover:bg-[#FF91E7] border border-[#4D4D4D] selling-2 px-[1rem] py-[0.75rem] rounded-[0.25rem] text-black">
+            <button
+              onClick={() => router.push("/profile")}
+              className="bg-[#FF91E7] hover:bg-[#FF91E7] border border-[#4D4D4D] selling-2 px-[1rem] py-[0.75rem] rounded-[0.25rem] text-black"
+            >
               Start&nbsp;selling →
             </button>
           )}

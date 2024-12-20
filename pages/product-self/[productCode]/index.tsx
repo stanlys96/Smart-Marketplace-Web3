@@ -48,10 +48,12 @@ export default function Home() {
   };
 
   const handleMouseEnter = (value: any) => {
+    if (addCommentLoading) return;
     setHoverRating(value);
   };
 
   const handleMouseLeave = () => {
+    if (addCommentLoading) return;
     setHoverRating(0);
   };
 
@@ -417,6 +419,7 @@ export default function Home() {
           </div>
           <div>
             <input
+              disabled={addCommentLoading}
               className="input-username text-black w-full"
               type="text"
               value={comment}

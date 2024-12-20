@@ -19,7 +19,11 @@ export default function Home() {
   const categories = [
     {
       id: 1,
-      title: "All",
+      title: "Categories",
+    },
+    {
+      id: 10,
+      title: "All products",
     },
     {
       id: 2,
@@ -54,12 +58,16 @@ export default function Home() {
       title: "Coffee",
     },
   ];
+
   const result = useReadContract({
     abi: MetaverseMarketplaceABI,
     address: process.env.NEXT_PUBLIC_MARKETPLACE_ADDRESS as any,
-    functionName: "getListingByProductType",
+    functionName:
+      productType === "All products"
+        ? "getAllUserListings"
+        : "getListingByProductType",
     account: account?.address,
-    args: [productType],
+    args: productType === "All products" ? [] : [productType],
   });
   const filterForMarketplace = (theData: any) => {
     return (
@@ -135,7 +143,7 @@ export default function Home() {
             <div key={data?.id} className="popover">
               <button
                 onClick={() => {
-                  if (data?.title === "All") {
+                  if (data?.title === "Categories") {
                     router.push("/");
                   } else {
                     router.push(`/${data?.title}`);
@@ -244,7 +252,10 @@ export default function Home() {
             With Gumroad, anyone can earn their first dollar online.
           </p>
           {account?.address && (
-            <button className="bg-[#FF91E7] hover:bg-[#FF91E7] border border-[#4D4D4D] selling-2 px-[1rem] py-[0.75rem] rounded-[0.25rem] text-black">
+            <button
+              onClick={() => router.push("/profile")}
+              className="bg-[#FF91E7] hover:bg-[#FF91E7] border border-[#4D4D4D] selling-2 px-[1rem] py-[0.75rem] rounded-[0.25rem] text-black"
+            >
               Start&nbsp;selling →
             </button>
           )}
