@@ -148,6 +148,9 @@ export default function Profile() {
                       <td>
                         <div className="flex flex-col">
                           <p className="font-semibold">{theData?.title}</p>
+                          <p className="text-[#888888]">
+                            Share this url with your friends!
+                          </p>
                           <a
                             className="underline cursor-pointer"
                             target="_blank"
