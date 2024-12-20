@@ -249,7 +249,7 @@ export default function Home() {
         <div className="h-[1px] w-full bg-[#646564]" />
         <footer className="bg-black py-[25px] mt-auto lg:flex-row flex-col flex gap-5 justify-center items-center">
           <p className="text-center text-[18px] lg:text-[24px] text-white">
-            With Gumroad, anyone can earn their first dollar online.
+            With Smart Marketplace, anyone can earn their first dollar online.
           </p>
           {account?.address && (
             <button

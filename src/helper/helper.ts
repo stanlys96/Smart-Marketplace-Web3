@@ -12,9 +12,9 @@ import {
 const PROJECT_ID = process.env.NEXT_PUBLIC_PROJECT_ID;
 
 const metadata = {
-  name: "Gumroad",
-  description: "Gumroad",
-  url: "https://gumroad-web3.vercel.app", // origin must match your domain & subdomain
+  name: "Smart Marketplace",
+  description: "Smart Marketplace",
+  url: "https://smart-marketplace-web3.vercel.app", // origin must match your domain & subdomain
   icons: [process.env.NEXT_PUBLIC_ICON_URL ?? ""],
 };
 
