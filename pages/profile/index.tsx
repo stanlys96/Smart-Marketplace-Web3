@@ -4,7 +4,12 @@ import { FaHome } from "react-icons/fa";
 import { MdShoppingBag } from "react-icons/md";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import { useEffect, useState } from "react";
-import { useReadContract, useAccount, useWriteContract } from "wagmi";
+import {
+  useReadContract,
+  useAccount,
+  useWriteContract,
+  useBalance,
+} from "wagmi";
 import {
   config,
   formatCurrencyString,
@@ -12,7 +17,7 @@ import {
 } from "../../src/helper/helper";
 import MetaverseMarketplaceABI from "../../src/helper/MetaverseMarketplaceABI.json";
 import { FidgetSpinner } from "react-loader-spinner";
-import { getBalance, waitForTransactionReceipt } from "wagmi/actions";
+import { waitForTransactionReceipt } from "wagmi/actions";
 import { BsPersonFill } from "react-icons/bs";
 import { notification } from "antd";
 import { ethers } from "ethers";
@@ -25,8 +30,13 @@ export default function Profile() {
   const [loading, setLoading] = useState(false);
   const { address } = useAccount();
   const { writeContractAsync } = useWriteContract();
-  const [currentETHBalance, setCurrentETHBalance] = useState("");
-  const [currentMETTBalance, setCurrentMETTBalance] = useState("");
+  const currentBalance = useBalance({ address: address });
+  const currentMettBalance = useBalance({
+    address: address,
+    token:
+      (process.env.NEXT_PUBLIC_METAVERSE_TOKEN_ADDRESS as any) ??
+      "0x0000000000000000000000000000000000000000",
+  });
   const [domLoaded, setDomLoaded] = useState(false);
   const proceedsResult = useReadContract({
     abi: MetaverseMarketplaceABI,
@@ -36,32 +46,6 @@ export default function Profile() {
     args: [address, "ETH"],
   });
 
-  const theBalance = getBalance(config, {
-    address: address ?? "0x0000000000000000000000000000000000000000",
-  });
-  const mettBalance = getBalance(config, {
-    address: address ?? "0x0000000000000000000000000000000000000000",
-    token:
-      (process.env.NEXT_PUBLIC_METAVERSE_TOKEN_ADDRESS as any) ??
-      "0x0000000000000000000000000000000000000000",
-  });
-
-  useEffect(() => {
-    theBalance
-      ?.then((result) => {
-        setCurrentETHBalance(result?.formatted);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    mettBalance
-      ?.then((result) => {
-        setCurrentMETTBalance(result?.formatted);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
   useEffect(() => {
     setDomLoaded(true);
   }, []);
@@ -164,13 +148,7 @@ export default function Profile() {
                       "You have successfully received 1000 Metaverse Token!",
                     placement: "topRight",
                   });
-                  mettBalance
-                    ?.then((result) => {
-                      setCurrentMETTBalance(result?.formatted);
-                    })
-                    .catch((err) => {
-                      console.log(err);
-                    });
+                  currentMettBalance?.refetch();
                 }
                 setLoading(false);
               } catch (e: any) {
@@ -194,9 +172,14 @@ export default function Profile() {
                 <p className="text-black text-[16px]">Balance</p>
                 <IoMdInformationCircleOutline size="22px" />
               </div>
-              <p className="font-bold">{currentETHBalance?.slice(0, 6)} ETH</p>
               <p className="font-bold">
-                {formatCurrencyString(currentMETTBalance)} METT
+                {currentBalance?.data?.formatted?.slice(0, 6)} ETH
+              </p>
+              <p className="font-bold">
+                {formatCurrencyString(
+                  currentMettBalance?.data?.formatted ?? "0"
+                )}{" "}
+                METT
               </p>
             </div>
             <div className="p-[1.5rem] flex flex-col justify-between text-[1.5rem] border border-black rounded-[0.25rem] bg-white">
