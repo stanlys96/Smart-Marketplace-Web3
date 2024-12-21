@@ -242,6 +242,7 @@ export default function Profile() {
                           placement: "topRight",
                         });
                         proceedsResult?.refetch();
+                        currentBalance?.refetch();
                       }
                       setLoading(false);
                     } catch (e) {
