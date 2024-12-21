@@ -158,7 +158,7 @@ export function getStarRatingsWidth(allComments: any, rating: number): string {
 
     const percentage = (totalCount / allComments.length) * 100;
 
-    return percentage % 1 === 0 ? percentage.toFixed(0) : percentage.toFixed(1);
+    return percentage.toFixed(0);
   } catch (e) {
     console.error("Error calculating star ratings width:", e);
     return "0";
