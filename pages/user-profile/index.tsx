@@ -45,7 +45,7 @@ export default function Profile() {
   return (
     <div className="flex h-[100vh]">
       {loading && (
-        <div className="bg-black/50 z-1000 absolute h-[100vh] w-[100vw] flex justify-center items-center">
+        <div className="bg-black/50 z-infinite absolute h-[100vh] w-[100vw] flex justify-center items-center">
           <div className="flex flex-col gap-y-4 items-center justify-center">
             <FidgetSpinner
               visible={true}

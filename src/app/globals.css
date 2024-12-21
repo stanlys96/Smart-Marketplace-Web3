@@ -824,3 +824,7 @@ table > tfoot > * {
   align-items: center;
   justify-content: center;
 }
+
+.z-infinite {
+  z-index: 10000 !important;
+}

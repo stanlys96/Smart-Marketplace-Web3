@@ -115,7 +115,7 @@ export default function Home() {
   return (
     <div className="h-full min-h-[100vh] relative">
       {loading && (
-        <div className="bg-black/50 z-10000000 absolute h-full overflow-auto w-[100vw] flex justify-center items-center">
+        <div className="bg-black/50 z-infinite absolute h-full overflow-auto w-[100vw] flex justify-center items-center">
           <div className="flex flex-col gap-y-4 items-center justify-center">
             <FidgetSpinner
               visible={true}
