@@ -7,7 +7,7 @@ import { FaSearch } from "react-icons/fa";
 import { BsPersonFill, BsThreeDots } from "react-icons/bs";
 import { useReadContract, useAccount, useWriteContract } from "wagmi";
 import MetaverseMarketplaceABI from "../../../src/helper/MetaverseMarketplaceABI.json";
-import { notification, Popover } from "antd";
+import { Empty, notification, Popover } from "antd";
 import {
   config,
   filterResult,
@@ -121,7 +121,7 @@ export default function Profile() {
             </div>
           </div>
         </header>
-        <div className="p-[64px] main-body overflow-y-auto">
+        <div className="p-[32px] main-body overflow-y-auto">
           <p className="text-black text-[24px] mb-[24px] font-medium">
             Products
           </p>
@@ -325,7 +325,12 @@ export default function Profile() {
               </tfoot>
             </table>
           ) : (
-            <p>You have not created any product yet...</p>
+            <div className="flex justify-center items-center flex-col w-full gap-y-2">
+              <Empty />
+              <p className="text-[20px] font-medium">
+                You have not created any product yet...
+              </p>
+            </div>
           )}
         </div>
       </div>

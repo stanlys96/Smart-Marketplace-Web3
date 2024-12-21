@@ -155,7 +155,7 @@ export default function Profile() {
             Update Profile
           </button>
         </header>
-        <div className="p-[64px]">
+        <div className="p-[32px]">
           <p className="mb-[10px] text-black text-[24px] font-semibold">
             Profile
           </p>

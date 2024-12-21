@@ -189,7 +189,7 @@ export default function Profile() {
             </div>
           </div>
         </header>
-        <div className="p-[64px]">
+        <div className="p-[32px]">
           <div className="grid grid-cols-3 gap-4">
             <p className="text-black text-[16px] mb-[24px] font-medium">
               Turn your idea into a live product in minutes. No fuss, just a few

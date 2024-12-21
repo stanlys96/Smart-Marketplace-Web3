@@ -329,7 +329,7 @@ export default function Edit() {
             </div>
           </div>
         </header>
-        <div className="p-[64px] main-body overflow-y-auto">
+        <div className="p-[32px] main-body overflow-y-auto">
           <div className="">
             <div>
               <p>Name</p>

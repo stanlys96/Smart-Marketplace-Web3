@@ -1,5 +1,6 @@
 import { defaultWagmiConfig } from "@web3modal/wagmi";
 import axios from "axios";
+import { ethers } from "ethers";
 import { FaStar } from "react-icons/fa";
 import {
   mainnet,
@@ -143,6 +144,23 @@ export function getAverageRating(comments: any): string {
     console.error("Error calculating average rating:", e);
     return "0";
   }
+}
+
+export function getTotalEarnings(userListingData: any): string {
+  return userListingData?.reduce(
+    (sum: number, data: any) =>
+      sum +
+      data?.buyers?.reduce(
+        (buyersSum: number, buyerData: any) =>
+          buyersSum +
+          parseFloat(buyerData?.quantity?.toString()) *
+            parseFloat(
+              ethers?.formatUnits(buyerData?.totalPrice?.toString(), "ether")
+            ),
+        0
+      ),
+    0
+  );
 }
 
 export function getStarRatingsWidth(allComments: any, rating: number): string {
