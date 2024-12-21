@@ -11,7 +11,7 @@ import {
 } from "viem/chains";
 
 type RatingProps = {
-  rating: number;
+  rating: number | string;
 };
 
 const PROJECT_ID = process.env.NEXT_PUBLIC_PROJECT_ID;
@@ -126,31 +126,50 @@ export const getCurrentFormattedDateTime = () => {
   return formattedDateTime;
 };
 
-export function getAverageRating(comments: any): number {
+export function getAverageRating(comments: any): string {
   try {
-    if (comments.length === 0) return 0; // Handle empty array case
+    if (!Array.isArray(comments) || comments.length === 0) return "0"; // Handle invalid or empty array case
 
     const totalRating = comments.reduce(
-      (sum: any, comment: any) => sum + parseFloat(comment?.rating),
+      (sum: number, comment: any) => sum + parseFloat(comment?.rating || "0"),
       0
     );
-    return totalRating / comments.length;
+
+    const average = totalRating / comments.length;
+
+    // Check if the average has decimals
+    return average % 1 === 0 ? average.toFixed(0) : average.toFixed(2);
   } catch (e) {
-    return 0;
+    console.error("Error calculating average rating:", e);
+    return "0";
   }
 }
 
-export function getStarRatingsWidth(allComments: any, rating: number): number {
-  let totalCount = 0;
-  for (let i = 0; i < allComments?.length; i++) {
-    if (allComments[i]?.rating?.toString() === rating?.toString()) {
-      totalCount++;
+export function getStarRatingsWidth(allComments: any, rating: number): string {
+  try {
+    if (!Array.isArray(allComments) || allComments.length === 0) return "0"; // Handle invalid or empty input
+
+    let totalCount = 0;
+    for (let i = 0; i < allComments.length; i++) {
+      if (allComments[i]?.rating?.toString() === rating?.toString()) {
+        totalCount++;
+      }
     }
+
+    const percentage = (totalCount / allComments.length) * 100;
+
+    // Check if the percentage has decimals
+    return percentage % 1 === 0 ? percentage.toFixed(0) : percentage.toFixed(2);
+  } catch (e) {
+    console.error("Error calculating star ratings width:", e);
+    return "0";
   }
-  return (totalCount / allComments?.length) * 100;
 }
 
 export const StarRating: React.FC<RatingProps> = ({ rating }) => {
+  if (typeof rating === "string") {
+    rating = parseFloat(rating);
+  }
   const renderStars = () => {
     const stars = [];
     for (let i = 1; i <= 5; i++) {

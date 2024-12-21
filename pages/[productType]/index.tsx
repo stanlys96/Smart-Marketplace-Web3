@@ -215,7 +215,7 @@ export default function Home() {
                     <div className="flex gap-x-1 items-center">
                       <FaStar className="text-yellow-500" />
                       <p>
-                        {getAverageRating(theResult?.comments)} (
+                        {getAverageRating(theResult?.comments ?? [])} (
                         {theResult?.comments?.length ?? 0})
                       </p>
                     </div>
