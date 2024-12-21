@@ -198,8 +198,8 @@ export default function Home() {
                         />
                       </div>
                       <p className="text-[18px] text-black">
-                        {currentData?.comments?.length} ratings (
-                        {getAverageRating(currentData?.comments)})
+                        {getAverageRating(currentData?.comments)} (
+                        {currentData?.comments?.length} ratings)
                       </p>
                     </div>
                   </div>

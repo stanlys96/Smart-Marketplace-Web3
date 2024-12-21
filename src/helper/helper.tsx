@@ -158,8 +158,7 @@ export function getStarRatingsWidth(allComments: any, rating: number): string {
 
     const percentage = (totalCount / allComments.length) * 100;
 
-    // Check if the percentage has decimals
-    return percentage % 1 === 0 ? percentage.toFixed(0) : percentage.toFixed(2);
+    return percentage % 1 === 0 ? percentage.toFixed(0) : percentage.toFixed(1);
   } catch (e) {
     console.error("Error calculating star ratings width:", e);
     return "0";
