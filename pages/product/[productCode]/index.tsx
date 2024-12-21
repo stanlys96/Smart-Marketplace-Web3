@@ -12,9 +12,12 @@ import { FaStar, FaInfoCircle, FaRegStar } from "react-icons/fa";
 import MetaverseMarketplaceABI from "../../../src/helper/MetaverseMarketplaceABI.json";
 import {
   config,
+  getAverageRating,
   getCurrentFormattedDateTime,
   getPinataUrl,
+  getStarRatingsWidth,
   marketplaceAddress,
+  StarRating,
 } from "../../../src/helper/helper";
 import { IoMdPerson } from "react-icons/io";
 import { waitForTransactionReceipt } from "wagmi/actions";
@@ -66,7 +69,6 @@ export default function Home() {
     args: [productCode],
   });
   const currentData = result?.data as any;
-
   const handleOk = async () => {
     try {
       if (!comment || rating <= 0 || addCommentLoading) return;
@@ -231,14 +233,13 @@ export default function Home() {
                     </div>
                     <div className="flex-1 p-[1rem] border-b border-b-white items-center flex gap-x-2">
                       <div className="flex gap-x-1">
-                        <FaRegStar size="20px" color="white" />
-                        <FaRegStar size="20px" color="white" />
-                        <FaRegStar size="20px" color="white" />
-                        <FaRegStar size="20px" color="white" />
-                        <FaRegStar size="20px" color="white" />
+                        <StarRating
+                          rating={getAverageRating(currentData?.comments)}
+                        />
                       </div>
                       <p className="text-[18px] text-white">
-                        {currentData?.comments?.length ?? 0} ratings
+                        {currentData?.comments?.length ?? 0} ratings (
+                        {getAverageRating(currentData?.comments)})
                       </p>
                     </div>
                   </div>
@@ -357,48 +358,99 @@ export default function Home() {
                         Ratings
                       </p>
                       <div className="flex gap-x-2 items-center">
-                        <FaStar color="white" size="16px" />
+                        <FaStar className="text-yellow-500" size="16px" />
                         <p className="text-white">
-                          0 ({currentData?.comments?.length ?? 0} ratings)
+                          {getAverageRating(currentData?.comments)} (
+                          {currentData?.comments?.length ?? 0} ratings)
                         </p>
                       </div>
                     </div>
                     <div className="flex justify-between gap-x-2 mt-[10px]">
                       <p className="text-white text-[1rem]">5 stars</p>
                       <div className="flex border-white border flex-1 rounded-[5px] gap-x-2 items-center">
-                        <div className="bg-[#ff90e8] h-full rounded-[5px] w-[0%]"></div>
+                        <div
+                          style={{
+                            width: `${getStarRatingsWidth(
+                              currentData?.comments,
+                              5
+                            )}%`,
+                          }}
+                          className={`bg-[#ff90e8] h-full rounded-[5px]`}
+                        ></div>
                       </div>
-                      <p className="text-white w-[35px]">0%</p>
+                      <p className="text-white w-[35px]">
+                        {getStarRatingsWidth(currentData?.comments, 5)}%
+                      </p>
                     </div>
                     <div className="flex justify-between gap-x-2 mt-[10px]">
                       <p className="text-white text-[1rem]">4 stars</p>
                       <div className="flex border-white border flex-1 rounded-[5px] gap-x-2 items-center">
-                        <div className="bg-[#ff90e8] h-full rounded-[5px] w-[0%]"></div>
+                        <div
+                          style={{
+                            width: `${getStarRatingsWidth(
+                              currentData?.comments,
+                              4
+                            )}%`,
+                          }}
+                          className="bg-[#ff90e8] h-full rounded-[5px]"
+                        ></div>
                       </div>
-                      <p className="text-white w-[35px]">0%</p>
+                      <p className="text-white w-[35px]">
+                        {getStarRatingsWidth(currentData?.comments, 4)}%
+                      </p>
                     </div>
                     <div className="flex justify-between gap-x-2 mt-[10px]">
                       <p className="text-white text-[1rem]">3 stars</p>
                       <div className="flex border-white border flex-1 rounded-[5px] gap-x-2 items-center">
-                        <div className="bg-[#ff90e8] h-full rounded-[5px] w-[0%]"></div>
+                        <div
+                          style={{
+                            width: `${getStarRatingsWidth(
+                              currentData?.comments,
+                              3
+                            )}%`,
+                          }}
+                          className="bg-[#ff90e8] h-full rounded-[5px]"
+                        ></div>
                       </div>
-                      <p className="text-white w-[35px]">0%</p>
+                      <p className="text-white w-[35px]">
+                        {getStarRatingsWidth(currentData?.comments, 3)}%
+                      </p>
                     </div>
                     <div className="flex justify-between gap-x-2 mt-[10px]">
                       <p className="text-white text-[1rem]">2 stars</p>
                       <div className="flex border-white border flex-1 rounded-[5px] gap-x-2 items-center">
-                        <div className="bg-[#ff90e8] h-full rounded-[5px] w-[0%]"></div>
+                        <div
+                          style={{
+                            width: `${getStarRatingsWidth(
+                              currentData?.comments,
+                              2
+                            )}%`,
+                          }}
+                          className="bg-[#ff90e8] h-full rounded-[5px]"
+                        ></div>
                       </div>
-                      <p className="text-white w-[35px]">0%</p>
+                      <p className="text-white w-[35px]">
+                        {getStarRatingsWidth(currentData?.comments, 2)}%
+                      </p>
                     </div>
                     <div className="flex justify-between gap-x-2 mt-[10px]">
                       <p className="text-white text-[1rem]">
                         1 star &nbsp;&nbsp;
                       </p>
                       <div className="flex border-white border flex-1 rounded-[5px] gap-x-2 items-center w-fit">
-                        <div className="bg-[#ff90e8] h-full rounded-[5px] w-[0%]"></div>
+                        <div
+                          style={{
+                            width: `${getStarRatingsWidth(
+                              currentData?.comments,
+                              1
+                            )}%`,
+                          }}
+                          className="bg-[#ff90e8] h-full rounded-[5px]"
+                        ></div>
                       </div>
-                      <p className="text-white w-[35px]">0%</p>
+                      <p className="text-white w-[35px]">
+                        {getStarRatingsWidth(currentData?.comments, 1)}%
+                      </p>
                     </div>
                     {(currentData?.comments as any)?.map(
                       (theData: any, index: any) => (
@@ -407,17 +459,7 @@ export default function Home() {
                           className="mt-[30px] flex flex-col gap-y-2"
                         >
                           <div className="flex gap-x-1">
-                            {[...Array(5)].map((_, index) =>
-                              index < theData?.rating ? (
-                                <FaStar key={index} color="white" size="16px" />
-                              ) : (
-                                <FaRegStar
-                                  key={index}
-                                  color="white"
-                                  size="16px"
-                                />
-                              )
-                            )}
+                            <StarRating rating={theData?.rating?.toString()} />
                           </div>
                           <p className="text-white">
                             &quot;{theData?.comment}&quot;

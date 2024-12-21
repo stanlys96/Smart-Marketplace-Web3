@@ -1,5 +1,6 @@
 import { defaultWagmiConfig } from "@web3modal/wagmi";
 import axios from "axios";
+import { FaStar } from "react-icons/fa";
 import {
   mainnet,
   arbitrum,
@@ -8,6 +9,10 @@ import {
   lisk,
   liskSepolia,
 } from "viem/chains";
+
+type RatingProps = {
+  rating: number;
+};
 
 const PROJECT_ID = process.env.NEXT_PUBLIC_PROJECT_ID;
 
@@ -119,6 +124,67 @@ export const getCurrentFormattedDateTime = () => {
 
   const formattedDateTime = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`;
   return formattedDateTime;
+};
+
+export function getAverageRating(comments: any): number {
+  try {
+    if (comments.length === 0) return 0; // Handle empty array case
+
+    const totalRating = comments.reduce(
+      (sum: any, comment: any) => sum + parseFloat(comment?.rating),
+      0
+    );
+    return totalRating / comments.length;
+  } catch (e) {
+    return 0;
+  }
+}
+
+export function getStarRatingsWidth(allComments: any, rating: number): number {
+  let totalCount = 0;
+  for (let i = 0; i < allComments?.length; i++) {
+    if (allComments[i]?.rating?.toString() === rating?.toString()) {
+      totalCount++;
+    }
+  }
+  return (totalCount / allComments?.length) * 100;
+}
+
+export const StarRating: React.FC<RatingProps> = ({ rating }) => {
+  const renderStars = () => {
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+      if (i <= Math.floor(rating)) {
+        stars.push(
+          <div key={i} className="relative">
+            <FaStar className="text-yellow-500" />
+          </div>
+        );
+      } else if (i === Math.ceil(rating)) {
+        const fillPercentage = (rating % 1) * 100;
+        stars.push(
+          <div key={i} className="relative">
+            <FaStar className="text-gray-300" />
+            <div
+              className="absolute top-0 left-0 h-full overflow-hidden"
+              style={{ width: `${fillPercentage}%` }}
+            >
+              <FaStar className="text-yellow-500" />
+            </div>
+          </div>
+        );
+      } else {
+        stars.push(
+          <div key={i} className="relative">
+            <FaStar className="text-gray-300" />
+          </div>
+        );
+      }
+    }
+    return stars;
+  };
+
+  return <div className="flex space-x-1">{renderStars()}</div>;
 };
 
 export const marketplaceAddress: any =

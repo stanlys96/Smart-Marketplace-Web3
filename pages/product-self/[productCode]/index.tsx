@@ -12,9 +12,12 @@ import { FaStar, FaInfoCircle, FaRegStar } from "react-icons/fa";
 import MetaverseMarketplaceABI from "../../../src/helper/MetaverseMarketplaceABI.json";
 import {
   config,
+  getAverageRating,
   getCurrentFormattedDateTime,
   getPinataUrl,
+  getStarRatingsWidth,
   marketplaceAddress,
+  StarRating,
 } from "../../../src/helper/helper";
 import { ethers } from "ethers";
 import Swal from "sweetalert2";
@@ -190,14 +193,13 @@ export default function Home() {
                     </div>
                     <div className="flex-1 p-[1rem] border-b border-b-black items-center flex gap-x-2">
                       <div className="flex gap-x-1">
-                        <FaRegStar size="20px" color="black" />
-                        <FaRegStar size="20px" color="black" />
-                        <FaRegStar size="20px" color="black" />
-                        <FaRegStar size="20px" color="black" />
-                        <FaRegStar size="20px" color="black" />
+                        <StarRating
+                          rating={getAverageRating(currentData?.comments)}
+                        />
                       </div>
                       <p className="text-[18px] text-black">
-                        {currentData?.comments?.length} ratings
+                        {currentData?.comments?.length} ratings (
+                        {getAverageRating(currentData?.comments)})
                       </p>
                     </div>
                   </div>
@@ -291,48 +293,99 @@ export default function Home() {
                         Ratings
                       </p>
                       <div className="flex gap-x-2 items-center">
-                        <FaRegStar color="black" size="16px" />
+                        <FaStar className="text-yellow-500" />
                         <p className="text-black">
-                          0 ({currentData?.comments?.length} ratings)
+                          {getAverageRating(currentData?.comments)} (
+                          {currentData?.comments?.length} ratings)
                         </p>
                       </div>
                     </div>
                     <div className="flex justify-between gap-x-2 mt-[10px]">
                       <p className="text-black text-[1rem]">5 stars</p>
                       <div className="flex border-black border flex-1 rounded-[5px] gap-x-2 items-center">
-                        <div className="bg-[#ff90e8] h-full rounded-[5px] w-[0%]"></div>
+                        <div
+                          style={{
+                            width: `${getStarRatingsWidth(
+                              currentData?.comments,
+                              5
+                            )}%`,
+                          }}
+                          className="bg-[#ff90e8] h-full rounded-[5px]"
+                        ></div>
                       </div>
-                      <p className="text-black w-[35px]">0%</p>
+                      <p className="text-black w-[35px]">
+                        {getStarRatingsWidth(currentData?.comments, 5)}%
+                      </p>
                     </div>
                     <div className="flex justify-between gap-x-2 mt-[10px]">
                       <p className="text-black text-[1rem]">4 stars</p>
                       <div className="flex border-black border flex-1 rounded-[5px] gap-x-2 items-center">
-                        <div className="bg-[#ff90e8] h-full rounded-[5px] w-[0%]"></div>
+                        <div
+                          style={{
+                            width: `${getStarRatingsWidth(
+                              currentData?.comments,
+                              4
+                            )}%`,
+                          }}
+                          className="bg-[#ff90e8] h-full rounded-[5px]"
+                        ></div>
                       </div>
-                      <p className="text-black w-[35px]">0%</p>
+                      <p className="text-black w-[35px]">
+                        {getStarRatingsWidth(currentData?.comments, 4)}%
+                      </p>
                     </div>
                     <div className="flex justify-between gap-x-2 mt-[10px]">
                       <p className="text-black text-[1rem]">3 stars</p>
                       <div className="flex border-black border flex-1 rounded-[5px] gap-x-2 items-center">
-                        <div className="bg-[#ff90e8] h-full rounded-[5px] w-[0%]"></div>
+                        <div
+                          style={{
+                            width: `${getStarRatingsWidth(
+                              currentData?.comments,
+                              3
+                            )}%`,
+                          }}
+                          className="bg-[#ff90e8] h-full rounded-[5px]"
+                        ></div>
                       </div>
-                      <p className="text-black w-[35px]">0%</p>
+                      <p className="text-black w-[35px]">
+                        {getStarRatingsWidth(currentData?.comments, 3)}%
+                      </p>
                     </div>
                     <div className="flex justify-between gap-x-2 mt-[10px]">
                       <p className="text-black text-[1rem]">2 stars</p>
                       <div className="flex border-black border flex-1 rounded-[5px] gap-x-2 items-center">
-                        <div className="bg-[#ff90e8] h-full rounded-[5px] w-[0%]"></div>
+                        <div
+                          style={{
+                            width: `${getStarRatingsWidth(
+                              currentData?.comments,
+                              2
+                            )}%`,
+                          }}
+                          className="bg-[#ff90e8] h-full rounded-[5px]"
+                        ></div>
                       </div>
-                      <p className="text-black w-[35px]">0%</p>
+                      <p className="text-black w-[35px]">
+                        {getStarRatingsWidth(currentData?.comments, 2)}%
+                      </p>
                     </div>
                     <div className="flex justify-between gap-x-2 mt-[10px]">
                       <p className="text-black text-[1rem]">
                         1 star &nbsp;&nbsp;
                       </p>
                       <div className="flex border-black border flex-1 rounded-[5px] gap-x-2 items-center w-fit">
-                        <div className="bg-[#ff90e8] h-full rounded-[5px] w-[0%]"></div>
+                        <div
+                          style={{
+                            width: `${getStarRatingsWidth(
+                              currentData?.comments,
+                              1
+                            )}%`,
+                          }}
+                          className="bg-[#ff90e8] h-full rounded-[5px]"
+                        ></div>
                       </div>
-                      <p className="text-black w-[35px]">0%</p>
+                      <p className="text-black w-[35px]">
+                        {getStarRatingsWidth(currentData?.comments, 1)}%
+                      </p>
                     </div>
                     {currentData?.comments?.map(
                       (theResult: any, index: any) => (
@@ -341,17 +394,9 @@ export default function Home() {
                           className="mt-[30px] flex flex-col gap-y-2"
                         >
                           <div className="flex gap-x-1">
-                            {[...Array(5)].map((_, index) =>
-                              index < theResult?.rating ? (
-                                <FaStar key={index} color="black" size="16px" />
-                              ) : (
-                                <FaRegStar
-                                  key={index}
-                                  color="black"
-                                  size="16px"
-                                />
-                              )
-                            )}
+                            <StarRating
+                              rating={theResult?.rating?.toString()}
+                            />
                           </div>
                           <p className="text-black">
                             &quot;{theResult?.comment ?? ""}&quot;
