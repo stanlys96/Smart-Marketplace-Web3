@@ -2,7 +2,7 @@ import { AppProps } from "next/app";
 import "../src/app/globals.css";
 import "../src/app/secondary.css";
 import { WagmiProvider } from "wagmi";
-import { liskSepolia } from "wagmi/chains";
+import { lisk } from "wagmi/chains";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createWeb3Modal } from "@web3modal/wagmi";
 import { defaultWagmiConfig } from "@web3modal/wagmi";
@@ -20,7 +20,7 @@ const metadata = {
   icons: [process.env.NEXT_PUBLIC_ICON_URL ?? ""],
 };
 
-const chains: any = [liskSepolia];
+const chains: any = [lisk];
 const config = defaultWagmiConfig({
   chains,
   projectId: PROJECT_ID ?? "",
