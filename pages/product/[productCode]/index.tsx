@@ -278,6 +278,13 @@ export default function Home() {
                     <button
                       disabled={loading}
                       onClick={async () => {
+                        if (currentData?.seller === account?.address) {
+                          return Swal.fire(
+                            "Your own product!",
+                            "Can not buy your own product!",
+                            "info"
+                          );
+                        }
                         setLoading(true);
                         try {
                           const secondResponse = await writeContractAsync({
