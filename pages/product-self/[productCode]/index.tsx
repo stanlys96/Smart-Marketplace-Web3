@@ -188,7 +188,9 @@ export default function Home() {
                         alt="user"
                       />
                       <p className="text-black text-[18px] py-[4px] underline">
-                        {currentData?.seller?.slice(0, 7) + "..."}
+                        {currentData?.seller === address
+                          ? "You"
+                          : currentData?.seller?.slice(0, 7) + "..."}
                       </p>
                     </div>
                     <div className="flex-1 p-[1rem] border-b border-b-black items-center flex gap-x-2">

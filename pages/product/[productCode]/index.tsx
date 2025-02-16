@@ -228,7 +228,9 @@ export default function Home() {
                         <IoMdPerson color="white" size="30px" />
                       </div>
                       <p className="text-white text-[24px] underline">
-                        {currentData?.seller?.slice(0, 7) + "..."}
+                        {currentData?.seller === account?.address
+                          ? "You"
+                          : currentData?.seller?.slice(0, 7) + "..."}
                       </p>
                     </div>
                     <div className="flex-1 p-[1rem] border-b border-b-white items-center flex gap-x-2">
