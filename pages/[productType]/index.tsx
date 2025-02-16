@@ -70,11 +70,7 @@ export default function Home() {
     args: productType === "All products" ? [] : [productType],
   });
   const filterForMarketplace = (theData: any) => {
-    return (
-      theData?.title &&
-      theData?.published &&
-      theData?.seller !== account?.address
-    );
+    return theData?.title && theData?.published;
   };
   const finalData = (result?.data as any)?.filter(filterForMarketplace);
   useEffect(() => {
@@ -209,7 +205,9 @@ export default function Home() {
                         <IoMdPerson color="white" size="28px" />
                       </div>
                       <p className="underline">
-                        {theResult?.seller?.slice(0, 7) + "..."}
+                        {theResult?.seller === account?.address
+                          ? "You"
+                          : theResult?.seller?.slice(0, 7) + "..."}
                       </p>
                     </div>
                     <div className="flex gap-x-1 items-center">
