@@ -20,7 +20,7 @@ const PROJECT_ID = process.env.NEXT_PUBLIC_PROJECT_ID;
 const metadata = {
   name: "Smart Marketplace",
   description: "Smart Marketplace",
-  url: "https://smart-marketplace-web3.vercel.app", // origin must match your domain & subdomain
+  url: "https://smart-marketplace-web3.vercel.app", // origin must match your domain & subdomain!
   icons: [process.env.NEXT_PUBLIC_ICON_URL ?? ""],
 };
 
